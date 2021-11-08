@@ -62,23 +62,22 @@ class PsRbm
 
     public function present($data) {
         return [
-            'context' => [
-                'versionPs' => $data['versionPs'],
-                'versionModule' => $data['versionModule'],
-                'moduleName' => $data['moduleName'],
-                'refreshToken' => $this->getRefreshToken(),
-                'emailSupport' => $data['emailSupport'],
-                'shop' => [
-                    'uuid' => $this->getShopUuidV4()
-                ],
-                'i18n' => [
-                    'isoCode' => $data['isoCode']
-                ],
-                'user' => [
-                    'createdFromIp' => $data['ipAddress'],
-                    'email' => $this->getEmail()
-                ]
-            ]
+            'versionPs' => $data['versionPs'],
+            'versionModule' => $data['versionModule'],
+            'moduleName' => $data['moduleName'],
+            'refreshToken' => $this->getRefreshToken(),
+            'emailSupport' => $data['emailSupport'],
+            'shop' => [
+                'uuid' => $this->getShopUuidV4()
+            ],
+            'i18n' => [
+                'isoCode' => $data['isoCode']
+            ],
+            'user' => [
+                'createdFromIp' => $data['ipAddress'],
+                'email' => $this->getEmail()
+            ],
+            'moduleTosUrl' => $data['moduleTosUrl']
         ];
     }
 }
