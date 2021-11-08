@@ -32,7 +32,7 @@ class PsRbm
     }
 
     public function getEmail() {
-        return $this->psAccountsService->getEmail();
+        return $this->psAccountService->getEmail();
     }
 
     /**
