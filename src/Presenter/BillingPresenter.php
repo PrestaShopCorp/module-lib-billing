@@ -89,36 +89,38 @@ class BillingPresenter
         $getEnv = !empty($params['billingEnv']) ? $params['billingEnv'] : '';
 
         return [
-            'context' => [
-                'billingEnv' => $this->envBuilder->buildBillingEnv($getEnv),
-                'billingUIUrl' => $this->urlBuilder->buildUIUrl($getEnv),
-                'isSandbox' => !empty($params['sandbox']) ? (bool) $params['sandbox'] : false,
+            'psBillingContext' => [
+                'context' => [
+                    'billingEnv' => $this->envBuilder->buildBillingEnv($getEnv),
+                    'billingUIUrl' => $this->urlBuilder->buildUIUrl($getEnv),
+                    'isSandbox' => !empty($params['sandbox']) ? (bool) $params['sandbox'] : false,
 
-                'versionPs' => _PS_VERSION_,
-                'versionModule' => $this->module->version,
-                'moduleName' => $this->module->name,
-                'displayName' => $this->module->displayName,
+                    'versionPs' => _PS_VERSION_,
+                    'versionModule' => $this->module->version,
+                    'moduleName' => $this->module->name,
+                    'displayName' => $this->module->displayName,
 
-                'i18n' => [
-                    'isoCode' => $this->getLanguageIsoCode(),
-                ],
+                    'i18n' => [
+                        'isoCode' => $this->getLanguageIsoCode(),
+                    ],
 
-                'refreshToken' => $this->getRefreshToken(),
-                'shop' => [
-                    'uuid' => $this->getShopUuid(),
-                ],
-                'user' => [
-                    'createdFromIp' => \Tools::getRemoteAddr(),
-                    'email' => $this->getEmail()
-                ],
+                    'refreshToken' => $this->getRefreshToken(),
+                    'shop' => [
+                        'uuid' => $this->getShopUuid(),
+                    ],
+                    'user' => [
+                        'createdFromIp' => \Tools::getRemoteAddr(),
+                        'email' => $this->getEmail()
+                    ],
 
-                'moduleLogo' => $this->getModuleLogo(),
-                // TODO: Use \Validate::isUrl($params['logo']) throws error
-                'partnerLogo' => !empty($params['logo']) ? $params['logo'] : '',
-                // TODO: Use \Validate::isUrl($params['tosLink']) throws error
-                'moduleTosUrl' => !empty($params['tosLink']) ? $params['tosLink'] : '',
-                // TODO: Use \Validate::isEmail($params['emailSupport']) throws error
-                'emailSupport' => !empty($params['emailSupport']) ? $params['emailSupport'] : ''
+                    'moduleLogo' => $this->getModuleLogo(),
+                    // TODO: Use \Validate::isUrl($params['logo']) throws error
+                    'partnerLogo' => !empty($params['logo']) ? $params['logo'] : '',
+                    // TODO: Use \Validate::isUrl($params['tosLink']) throws error
+                    'moduleTosUrl' => !empty($params['tosLink']) ? $params['tosLink'] : '',
+                    // TODO: Use \Validate::isEmail($params['emailSupport']) throws error
+                    'emailSupport' => !empty($params['emailSupport']) ? $params['emailSupport'] : ''
+                ]
             ]
         ];
     }
