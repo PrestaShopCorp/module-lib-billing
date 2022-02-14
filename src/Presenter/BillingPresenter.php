@@ -20,12 +20,11 @@
 
 namespace PrestaShop\PsBilling\Presenter;
 
-use Tools;
 use Module;
+use PrestaShop\PsAccountsInstaller\Installer\Facade\PsAccounts;
 use PrestaShop\PsBilling\Builder\EnvBuilder;
 use PrestaShop\PsBilling\Builder\UrlBuilder;
 use PrestaShop\PsBilling\Config\Config;
-use PrestaShop\PsAccountsInstaller\Installer\Facade\PsAccounts;
 
 class BillingPresenter
 {
@@ -54,16 +53,15 @@ class BillingPresenter
      */
     private $urlBuilder;
 
-
     /**
      * Presenter constructor.
      *
-     * @param  \Module $module
-     * @param  PsAccounts $accountFacade
+     * @param \Module $module
+     * @param PsAccounts $accountFacade
      * @param \Context|null $context
      */
     public function __construct(
-        \Module $module,
+        Module $module,
         PsAccounts $accountFacade = null,
         \Context $context = null)
     {
@@ -110,7 +108,7 @@ class BillingPresenter
                     ],
                     'user' => [
                         'createdFromIp' => \Tools::getRemoteAddr(),
-                        'email' => $this->getEmail()
+                        'email' => $this->getEmail(),
                     ],
 
                     'moduleLogo' => $this->getModuleLogo(),
@@ -119,9 +117,9 @@ class BillingPresenter
                     // TODO: Use \Validate::isUrl($params['tosLink']) throws error
                     'moduleTosUrl' => !empty($params['tosLink']) ? $params['tosLink'] : '',
                     // TODO: Use \Validate::isEmail($params['emailSupport']) throws error
-                    'emailSupport' => !empty($params['emailSupport']) ? $params['emailSupport'] : ''
-                ]
-            ]
+                    'emailSupport' => !empty($params['emailSupport']) ? $params['emailSupport'] : '',
+                ],
+            ],
         ];
     }
 
@@ -130,9 +128,9 @@ class BillingPresenter
      */
     private function getShopUuid()
     {
-        return (method_exists($this->psAccountsService, 'getShopUuid') ?
+        return method_exists($this->psAccountsService, 'getShopUuid') ?
             $this->psAccountsService->getShopUuid() :
-            $this->psAccountsService->getShopUuidV4());
+            $this->psAccountsService->getShopUuidV4();
     }
 
     /**
@@ -206,6 +204,6 @@ class BillingPresenter
      */
     private function getModuleLogo()
     {
-        return $this->getShopUri().$this->module->getPathUri().'logo.png';
+        return $this->getShopUri() . $this->module->getPathUri() . 'logo.png';
     }
 }

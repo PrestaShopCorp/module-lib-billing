@@ -32,7 +32,7 @@ class UrlBuilder
                 // Handle by .env in Billing UI
                 return null;
             case 'integration':
-                return 'https://billing.distribution-'.$envName.'.prestashop.net';
+                return 'https://billing.distribution-' . $envName . '.prestashop.net';
                 break;
             case 'prestabulle1':
             case 'prestabulle2':
@@ -43,10 +43,10 @@ class UrlBuilder
             case 'prestabulle7':
             case 'prestabulle8':
             case 'prestabulle9':
-                return 'https://billing-'.$envName.'.distribution-integration.prestashop.net';
+                return 'https://billing-' . $envName . '.distribution-integration.prestashop.net';
                 break;
             case 'preprod':
-                return 'https://billing.distribution-'.$envName.'.prestashop.net';
+                return 'https://billing.distribution-' . $envName . '.prestashop.net';
                 break;
             default:
                 return 'https://billing.distribution.prestashop.net';
