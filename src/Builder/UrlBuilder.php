@@ -54,6 +54,7 @@ class UrlBuilder
     }
 
     // TODO: Build API URL
+
     /**
      * @return string
      */
