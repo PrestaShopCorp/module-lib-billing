@@ -22,7 +22,7 @@ namespace PrestaShop\PsBilling\Config;
 
 class Config
 {
-    public const ENV_LIST = [
+    const ENV_LIST = [
         'default',
         'integration',
         'prestabulle1',
@@ -41,15 +41,15 @@ class Config
     /**
      * Fallback local
      */
-    public const I18N_FALLBACK_LOCALE = 'en';
+    const I18N_FALLBACK_LOCALE = 'en';
 
     /**
      * Available module
      */
-    public const PS_ACCOUNTS_MODULE_NAME = 'ps_accounts';
+    const PS_ACCOUNTS_MODULE_NAME = 'ps_accounts';
 
     /**
      * Available services class names
      */
-    public const PS_ACCOUNTS_SERVICE = 'PrestaShop\Module\PsAccounts\Service\PsAccountsService';
+    const PS_ACCOUNTS_SERVICE = 'PrestaShop\Module\PsAccounts\Service\PsAccountsService';
 }
