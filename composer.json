@@ -1,8 +1,8 @@
 {
-    "name": "prestashop/prestashop-rbm-installer",
+    "name": "prestashop/module-lib-billing",
     "version": "1.0.0",
     "type": "library",
-    "description": "Utility package to retrieve the rbm module context",
+    "description": "Utility package to retrieve SasS App module context and more",
     "license": "MIT",
     "autoload": {
         "psr-4": {
