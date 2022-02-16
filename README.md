@@ -4,11 +4,11 @@ Utility package to present data from psx configuration page.
 
 ## Installation
 
-This package is available on [Packagist](https://packagist.org/packages/prestashop/module-lib-billing),
+This package is available on [Packagist](https://packagist.org/packages/prestashopcorp/module-lib-billing),
 you can install it via [Composer](https://getcomposer.org).
 
 ```shell script
-composer require prestashop/module-lib-billing
+composer require prestashopcorp/module-lib-billing
 ```
 ## Register as a service in your PSx container
 
