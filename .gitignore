@@ -12,3 +12,8 @@ composer-dev.lock
 
 ### Backup ###
 *.bak
+
+### PHP Unit ###
+.phpunit.result.cache
+phpunit
+phpunit*.phar

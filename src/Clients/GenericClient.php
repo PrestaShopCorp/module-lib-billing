@@ -18,7 +18,6 @@
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
-
 namespace PrestaShop\Module\PsBilling\Clients;
 
 use GuzzleHttp\Client;
@@ -83,20 +82,7 @@ abstract class GenericClient
     {
         $response = $this->getClient()->get($this->getRoute(), $options);
         $responseHandler = new ApiResponseHandler();
-        $response = $responseHandler->handleResponse($response);
-        // If response is not successful only
-        if (\Configuration::get('PS_ACCOUNTS_DEBUG_LOGS_ENABLED') && !$response['status']) {
-            /**
-             * @var \Ps_accounts
-             */
-            $module = \Module::getInstanceByName('ps_accounts');
-            $logger = $module->getLogger();
-            $logger->debug('route ' . $this->getRoute());
-            $logger->debug('options ' . var_export($options, true));
-            $logger->debug('response ' . var_export($response, true));
-        }
-
-        return $response;
+        return $responseHandler->handleResponse($response);
     }
 
 
@@ -105,7 +91,7 @@ abstract class GenericClient
      *
      * @return bool
      */
-    protected function getCatchExceptions()
+    protected function isCatchExceptions()
     {
         return $this->catchExceptions;
     }
@@ -175,7 +161,7 @@ abstract class GenericClient
      *
      * @return void
      */
-    protected function setExceptionsMode($bool)
+    protected function setCatchExceptions($bool)
     {
         $this->catchExceptions = $bool;
     }
