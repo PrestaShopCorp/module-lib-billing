@@ -1,5 +1,5 @@
-
 <?php
+
 /**
  * Copyright since 2007 PrestaShop SA and Contributors
  * PrestaShop is an International Registered Trademark & Property of PrestaShop SA
@@ -18,100 +18,118 @@
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
-namespace PrestaShop\PsBilling\APIClient;
+
+namespace PrestaShop\PsBilling\Clients;
 
 use GuzzleHttp\Client;
 
-
+/**
+ * BillingClient low level client to access to billing API routes
+ */
 class BillingClient extends GenericClient
 {
     /**
-     * ServicesBillingClient constructor.
+     * Constructor with parameters
      *
-     * @param string $apiUrl
-     * @param PsAccountsService $psAccountsService
-     * @param ShopProvider $shopProvider
-     * @param Link $link
-     * @param Client|null $client
-     *
-     * @throws OptionResolutionException
-     * @throws \PrestaShopException
-     * @throws \Exception
+     * @return void
      */
     public function __construct(
-        $apiUrl,
-        PsAccountsService $psAccountsService,
-        ShopProvider $shopProvider,
-        Link $link,
-        Client $client = null
+        string $moduleName,
+        Client $client = null,
+        string $apiUrl = null,
+        string $token = null,
+        bool $isSandbox = false
     ) {
         parent::__construct();
 
-        $shopId = $shopProvider->getCurrentShop()['id'];
-
-        // TODO voir comment on récupère le tokent, le shop id, le module id
-        $token = $psAccountsService->getOrRefreshToken();
-
-        $this->setLink($link->getLink());
-
-        // Client can be provided for tests
-        if (null === $client) {
+        // Client can be provided for tests or some specific use case
+        if (!isset($client) || null === $client) {
             $client = new Client([
                 'base_url' => $apiUrl,
                 'defaults' => [
                     'timeout' => $this->timeout,
                     'exceptions' => $this->catchExceptions,
                     'headers' => [
-                        // Commented, else does not work anymore with API.
-                        //'Content-Type' => 'application/vnd.accounts.v1+json', // api version to use
                         'Accept' => 'application/json',
                         'Authorization' => 'Bearer ' . (string) $token,
-                        'Shop-Id' => $shopId,
-                        'Module-Version' => \Ps_accounts::VERSION, // version of the module
-                        'Prestashop-Version' => _PS_VERSION_, // prestashop version
+                        'Sandbox' => (string) $isSandbox
                     ],
                 ],
             ]);
         }
-
         $this->setClient($client);
-    }
-
-    public function getCurrentCustomer($shopUuidV4)
-    {
-    }
-
-
-    public function getCurrentSubscription($shopUuidV4, $bodyHttp)
-    {
+        $this->setModuleName($moduleName);
     }
 
     /**
-     * @param mixed $shopUuidV4
-     * @param string $module
+     * retrieveCustomerById
      *
-     * @return array|false
+     * @param  string $customerId the shop id
+     * @param  string $apiVersion version of API to use (default: "v1")
+     * @return array with success (bool), httpStatus (int), body (array) extract from the response
      */
-    public function getModulePlans($shopUuidV4, $module)
+    public function retrieveCustomerById(string $customerId, string $apiVersion = 'v1')
     {
-        $this->setRoute('/shops/' . $shopUuidV4 . '/subscriptions/' . $module);
-
+        $this->setApiVersion($apiVersion);
+        $this->setRoute('/customers/' . $customerId);
         return $this->get();
     }
 
     /**
-     * @param mixed $shopUuidV4
-     * @param string $module
-     * @param array $bodyHttp
+     * Retrieve the subscription of the customer for your module
      *
-     * @return array|false
+     * @param  string $customerId the shop id
+     * @param  string $apiVersion version of API to use (default: "v1")
+     * @return array with success (bool), httpStatus (int), body (array) extract from the response
      */
-    public function createBillingSubscriptions($shopUuidV4, $module, $bodyHttp)
+    public function retrieveSubscriptionByCustomerId(string $customerId, string $apiVersion = 'v1')
     {
-        $this->setRoute('/shops/' . $shopUuidV4 . '/subscriptions/' . $module);
+        $this->setApiVersion($apiVersion);
+        $this->setRoute('/customers/' . $customerId . '/subscriptions/' + $this->getModuleName());
+        return $this->get();
+    }
 
-        return $this->post([
-            'body' => $bodyHttp,
-        ]);
+    /**
+     * Retrieve plans associated with the module
+     *
+     * @param  string $lang the lang of the user
+     * @param  string $status whether you want to get only "active" plan, or the "archived", or both (set to null)
+     * @param  string $limit number of plan to return
+     * @param  string $offset pagination start
+     * @param  string $apiVersion version of API to use (default: "v1")
+     * @return array with success (bool), httpStatus (int), body (array) extract from the response
+     */
+    public function retrievePlans(string $lang, string $status = 'active', string $limit = '10', string $offset, string $apiVersion = 'v1')
+    {
+        $this->setApiVersion($apiVersion);
+        $this->setRoute('/products/' . $this->getModuleName() . '/plans?status=' . $status . '&lang_iso_code=' . $lang . '&limit=' . $limit . ($offset ? '&offset=' . $offset : ''));
+        return $this->get();
+    }
+
+    /**
+     * Technical name of the module
+     * 
+     * @var string
+     */
+    private $moduleName;
+
+    /**
+     * Getter for moduleName
+     *
+     * @return string
+     */
+    private function getModuleName()
+    {
+        return $this->moduleName;
+    }
+    /**
+     * Setter for moduleName
+     *
+     * @param  string $moduleName
+     * @return void
+     */
+    private function setModuleName(string $moduleName)
+    {
+        $this->moduleName = $moduleName;
     }
 }

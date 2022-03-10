@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright since 2007 PrestaShop SA and Contributors
  * PrestaShop is an International Registered Trademark & Property of PrestaShop SA
@@ -22,5 +23,13 @@ namespace PrestaShop\PsBilling\Service;
 
 class BillingService
 {
-
+  public function getCurrentCustomerV1()
+  {
+  }
+  public function getCurrentSubscriptionV1()
+  {
+  }
+  public function getCurrentPlansV1()
+  {
+  }
 }

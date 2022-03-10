@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright since 2007 PrestaShop SA and Contributors
  * PrestaShop is an International Registered Trademark & Property of PrestaShop SA
@@ -18,21 +19,24 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
 
-namespace PrestaShop\Module\PsBilling\Handler;
+namespace PrestaShop\PsBilling\Clients\Handler;
 
-use GuzzleHttp\Message\ResponseInterface;
+use GuzzleHttp\Psr7\Response;
+
 
 /**
- * Handle api response.
+ * HttpResponseHandler handle http call response
  */
-class ApiResponseHandler
+class HttpResponseHandler
 {
     /**
      * Format api response.
-     *
+     * 
+     * @param Response $response
+     * 
      * @return array
      */
-    public function handleResponse(ResponseInterface $response)
+    public function handleResponse(Response $response)
     {
         $responseContents = json_decode($response->getBody()->getContents(), true);
 

@@ -1,5 +1,5 @@
-
 <?php
+
 /**
  * Copyright since 2007 PrestaShop SA and Contributors
  * PrestaShop is an International Registered Trademark & Property of PrestaShop SA
@@ -18,10 +18,11 @@
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
-namespace PrestaShop\Module\PsBilling\Clients;
+
+namespace PrestaShop\PsBilling\Clients;
 
 use GuzzleHttp\Client;
-use PrestaShop\Module\PsAccounts\Handler\Response\ApiResponseHandler;
+use PrestaShop\PsBilling\Clients\Handler\HttpResponseHandler;
 
 /**
  * Construct the client used to make call to maasland.
@@ -44,13 +45,6 @@ abstract class GenericClient
     protected $client;
 
     /**
-     * Class Link in order to generate module link.
-     *
-     * @var \Link
-     */
-    protected $link;
-
-    /**
      * Api route.
      *
      * @var string
@@ -63,6 +57,14 @@ abstract class GenericClient
      * @var int
      */
     protected $timeout = 10;
+
+
+    /**
+     * Version of the API
+     *
+     * @var string
+     */
+    protected $apiVersion;
 
     /**
      * GenericClient constructor.
@@ -80,60 +82,9 @@ abstract class GenericClient
      */
     protected function get(array $options = [])
     {
-        $response = $this->getClient()->get($this->getRoute(), $options);
-        $responseHandler = new ApiResponseHandler();
+        $response = $this->getClient()->get($this->concatApiVersionAndRoute(), $options);
+        $responseHandler = new HttpResponseHandler();
         return $responseHandler->handleResponse($response);
-    }
-
-
-    /**
-     * Getter for exceptions mode.
-     *
-     * @return bool
-     */
-    protected function isCatchExceptions()
-    {
-        return $this->catchExceptions;
-    }
-
-    /**
-     * Getter for client.
-     *
-     * @return Client
-     */
-    public function getClient()
-    {
-        return $this->client;
-    }
-
-    /**
-     * Getter for Link.
-     *
-     * @return \Link
-     */
-    protected function getLink()
-    {
-        return $this->link;
-    }
-
-    /**
-     * Getter for route.
-     *
-     * @return string
-     */
-    protected function getRoute()
-    {
-        return $this->route;
-    }
-
-    /**
-     * Getter for timeout.
-     *
-     * @return int
-     */
-    protected function getTimeout()
-    {
-        return $this->timeout;
     }
 
     /**
@@ -143,13 +94,14 @@ abstract class GenericClient
      */
     protected function setClient(Client $client)
     {
-        /** @var \Ps_accounts $module */
-        $module = \Module::getInstanceByName('ps_accounts');
+        // TODO voir si utile de garder ce genres de choses
+        // /** @var \Ps_accounts $module */
+        // $module = \Module::getInstanceByName('ps_accounts');
 
-        $client->setDefaultOption(
-            'verify',
-            (bool) $module->getParameter('ps_accounts.check_api_ssl_cert')
-        );
+        // $client->setDefaultOption(
+        //     'verify',
+        //     (bool) $module->getParameter('ps_accounts.check_api_ssl_cert')
+        // );
 
         $this->client = $client;
     }
@@ -164,16 +116,6 @@ abstract class GenericClient
     protected function setCatchExceptions($bool)
     {
         $this->catchExceptions = $bool;
-    }
-
-    /**
-     * Setter for link.
-     *
-     * @return void
-     */
-    protected function setLink(\Link $link)
-    {
-        $this->link = $link;
     }
 
     /**
@@ -198,5 +140,80 @@ abstract class GenericClient
     protected function setTimeout($timeout)
     {
         $this->timeout = $timeout;
+    }
+
+    /**
+     * Setter for apiVersion.
+     *
+     * @param string $apiVersion
+     *
+     * @return void
+     */
+    protected function setApiVersion($apiVersion)
+    {
+        $this->apiVersion = $apiVersion;
+    }
+
+    /**
+     * Getter for exceptions mode.
+     *
+     * @return bool
+     */
+    protected function isCatchExceptions()
+    {
+        return $this->catchExceptions;
+    }
+
+    /**
+     * Getter for client.
+     *
+     * @return Client
+     */
+    public function getClient()
+    {
+        return $this->client;
+    }
+
+    /**
+     * Getter for route.
+     *
+     * @return string
+     */
+    protected function getRoute()
+    {
+        return $this->route;
+    }
+
+    /**
+     * Getter for timeout.
+     *
+     * @return int
+     */
+    protected function getTimeout()
+    {
+        return $this->timeout;
+    }
+
+    /**
+     * Getter for apiVersion.
+     * 
+     * @return string
+     */
+    protected function getApiVersion()
+    {
+        return $this->apiVersion;
+    }
+
+    /**
+     * Add api version at the beginning of the route if set
+     *
+     * @return string
+     */
+    private function concatApiVersionAndRoute(): string
+    {
+        if ($this->getApiVersion()) {
+            return $this->getApiVersion() . $this->getRoute();
+        }
+        return $this->getRoute();
     }
 }
