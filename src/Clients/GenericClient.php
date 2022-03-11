@@ -209,7 +209,7 @@ abstract class GenericClient
      *
      * @return string
      */
-    private function concatApiVersionAndRoute(): string
+    private function concatApiVersionAndRoute()
     {
         if ($this->getApiVersion()) {
             return $this->getApiVersion() . $this->getRoute();

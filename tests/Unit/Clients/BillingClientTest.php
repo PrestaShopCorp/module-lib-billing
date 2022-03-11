@@ -17,7 +17,7 @@ class BillingClientTest extends TestCase
     protected $plans;
     protected $container;
 
-    protected function setUp(): void
+    protected function setUp()
     {
         parent::setUp();
         $this->customer =  [
@@ -238,7 +238,7 @@ class BillingClientTest extends TestCase
         $this->assertEquals($result['body'], $this->plans);
 
         // Test with all params
-        $result = $billingClient->retrievePlans('fr', 'archived', 100, '["1234567","4567890"]', 'v2');
+        $result = $billingClient->retrievePlans('fr', 'v2', 'archived', 100, '["1234567","4567890"]');
         $request = $this->container[1]['request'];
         $this->assertEquals($request->getMethod(), 'GET');
         $this->assertEquals($request->getUri(), 'v2/products/rbm_example/plans?status=archived&lang_iso_code=fr&limit=100&offset=%5B%221234567%22,%224567890%22%5D');

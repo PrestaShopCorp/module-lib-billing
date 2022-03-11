@@ -38,24 +38,27 @@ class BillingClient extends GenericClient
         Client $client = null,
         string $apiUrl = null,
         string $token = null,
-        bool $isSandbox = false
+        bool $isSandbox = null
     ) {
         parent::__construct();
 
         // Client can be provided for tests or some specific use case
         if (!isset($client) || null === $client) {
-            $client = new Client([
+            $clientParams = [
                 'base_url' => $apiUrl,
                 'defaults' => [
                     'timeout' => $this->timeout,
                     'exceptions' => $this->catchExceptions,
                     'headers' => [
                         'Accept' => 'application/json',
-                        'Authorization' => 'Bearer ' . (string) $token,
-                        'Sandbox' => (string) $isSandbox
-                    ],
-                ],
-            ]);
+                        'Authorization' => 'Bearer ' . (string) $token
+                    ]
+                ]
+            ];
+            if (true === $isSandbox) {
+                $clientParams['defaults']['headers']['Sandbox'] = 'true';
+            }
+            $client = new Client($clientParams);
         }
         $this->setClient($client);
         $this->setModuleName($moduleName);
@@ -93,13 +96,14 @@ class BillingClient extends GenericClient
      * Retrieve plans associated with the module
      *
      * @param  string $lang the lang of the user
-     * @param  string $status whether you want to get only "active" plan, or the "archived", or both (set to null)
-     * @param  string $limit number of plan to return
-     * @param  string $offset pagination start
      * @param  string $apiVersion version of API to use (default: "v1")
-     * @return array with success (bool), httpStatus (int), body (array) extract from the response
+     * @param  string $status whether you want to get only "active" plan, or the "archived", or both when set to null  (default: "active")
+     * @param  string $limit number of plan to return (default: "10")
+     * @param  string $offset pagination start (default: null)
+     * 
+     * @return array with success (bool), httpStatus (int), body (array) extracted from the response
      */
-    public function retrievePlans(string $lang, string $status = 'active', string $limit = '10', string $offset = null, string $apiVersion = 'v1')
+    public function retrievePlans(string $lang, string $apiVersion = 'v1', string $status = 'active', string $limit = '10', string $offset = null)
     {
         $this->setApiVersion($apiVersion);
         $this->setRoute('/products/' . $this->getModuleName() . '/plans?status=' . $status . '&lang_iso_code=' . $lang . '&limit=' . $limit . ($offset ? '&offset=' . $offset : ''));

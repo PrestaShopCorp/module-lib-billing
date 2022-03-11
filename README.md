@@ -57,8 +57,8 @@ For example in your main module's class `getContent` method.
 Please follow theses steps to launch unit tests
 
 ```
-# Needs to have wget, for OS without wget pleae see the official website
-wget -O phpunit https://phar.phpunit.de/phpunit-9.phar
+# Needs to have wget, for OS without wget pleae see the official website (or just visit this link)
+wget -O phpunit https://phar.phpunit.de/phpunit-5.phar
 
 chmod +x phpunit
 
