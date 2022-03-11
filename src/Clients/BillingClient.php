@@ -35,7 +35,7 @@ class BillingClient extends GenericClient
      */
     public function __construct(
         $moduleName,
-        Client $client = null,
+        $client = null,
         $apiUrl = null,
         $token = null,
         $isSandbox = null

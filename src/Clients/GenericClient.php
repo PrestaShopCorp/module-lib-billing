@@ -94,15 +94,6 @@ abstract class GenericClient
      */
     protected function setClient(Client $client)
     {
-        // TODO voir si utile de garder ce genres de choses
-        // /** @var \Ps_accounts $module */
-        // $module = \Module::getInstanceByName('ps_accounts');
-
-        // $client->setDefaultOption(
-        //     'verify',
-        //     (bool) $module->getParameter('ps_accounts.check_api_ssl_cert')
-        // );
-
         $this->client = $client;
     }
 
