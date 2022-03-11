@@ -182,39 +182,66 @@ class BillingClientTest extends TestCase
 
         // Test the call made by the methods
         $this->assertEquals(count($this->container), 1);
+        $request = $this->container[0]['request'];
+        $this->assertEquals($request->getMethod(), 'GET');
+        $this->assertEquals($request->getUri(), 'v1/customers/b2581e4b-0030-4fc8-9bf2-7f01c550a946');
 
         // Test the format and the content
         $this->assertEquals($result['success'], true);
         $this->assertEquals($result['httpStatus'], 200);
         $this->assertEquals($result['body'], $this->customer);
+
+        // Test with all params
+        $result = $billingClient->retrieveCustomerById('b2581e4b-0030-4fc8-9bf2-7f01c550a946', 'v2');
+        $request = $this->container[1]['request'];
+        $this->assertEquals($request->getMethod(), 'GET');
+        $this->assertEquals($request->getUri(), 'v2/customers/b2581e4b-0030-4fc8-9bf2-7f01c550a946');
     }
 
     public function testRetrieveSubscriptionByCustomerId()
     {
         $billingClient = $this->getBillingClient(new Response(200, [], json_encode($this->subscription)));
-        $result = $billingClient->retrieveCustomerById('b2581e4b-0030-4fc8-9bf2-7f01c550a946');
+        $result = $billingClient->retrieveSubscriptionByCustomerId('b2581e4b-0030-4fc8-9bf2-7f01c550a946');
 
         // Test the call made by the methods
         $this->assertEquals(count($this->container), 1);
+        $request = $this->container[0]['request'];
+        $this->assertEquals($request->getMethod(), 'GET');
+        $this->assertEquals($request->getUri(), 'v1/customers/b2581e4b-0030-4fc8-9bf2-7f01c550a946/subscriptions/rbm_example');
 
         // Test the format and the content
         $this->assertEquals($result['success'], true);
         $this->assertEquals($result['httpStatus'], 200);
         $this->assertEquals($result['body'], $this->subscription);
+
+        // Test with all params
+        $result = $billingClient->retrieveSubscriptionByCustomerId('b2581e4b-0030-4fc8-9bf2-7f01c550a946', 'v2');
+        $request = $this->container[1]['request'];
+        $this->assertEquals($request->getMethod(), 'GET');
+        $this->assertEquals($request->getUri(), 'v2/customers/b2581e4b-0030-4fc8-9bf2-7f01c550a946/subscriptions/rbm_example');
     }
 
     public function testRetrievePlansShouldCallTheProperRoute()
     {
         $billingClient = $this->getBillingClient(new Response(200, [], json_encode($this->plans)));
-        $result = $billingClient->retrieveCustomerById('b2581e4b-0030-4fc8-9bf2-7f01c550a946');
+        $result = $billingClient->retrievePlans('fr');
 
         // Test the call made by the methods
         $this->assertEquals(count($this->container), 1);
+        $request = $this->container[0]['request'];
+        $this->assertEquals($request->getMethod(), 'GET');
+        $this->assertEquals($request->getUri(), 'v1/products/rbm_example/plans?status=active&lang_iso_code=fr&limit=10');
 
         // Test the format and the content
         $this->assertEquals($result['success'], true);
         $this->assertEquals($result['httpStatus'], 200);
         $this->assertEquals($result['body'], $this->plans);
+
+        // Test with all params
+        $result = $billingClient->retrievePlans('fr', 'archived', 100, '["1234567","4567890"]', 'v2');
+        $request = $this->container[1]['request'];
+        $this->assertEquals($request->getMethod(), 'GET');
+        $this->assertEquals($request->getUri(), 'v2/products/rbm_example/plans?status=archived&lang_iso_code=fr&limit=100&offset=%5B%221234567%22,%224567890%22%5D');
     }
 
 
@@ -230,6 +257,8 @@ class BillingClientTest extends TestCase
         $history = Middleware::history($this->container);
         $mock = new MockHandler([
             $response,
+            $response,
+            $response
         ]);
 
         $handlerStack = HandlerStack::create($mock);

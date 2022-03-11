@@ -85,7 +85,7 @@ class BillingClient extends GenericClient
     public function retrieveSubscriptionByCustomerId(string $customerId, string $apiVersion = 'v1')
     {
         $this->setApiVersion($apiVersion);
-        $this->setRoute('/customers/' . $customerId . '/subscriptions/' + $this->getModuleName());
+        $this->setRoute('/customers/' . $customerId . '/subscriptions/' . $this->getModuleName());
         return $this->get();
     }
 
@@ -99,7 +99,7 @@ class BillingClient extends GenericClient
      * @param  string $apiVersion version of API to use (default: "v1")
      * @return array with success (bool), httpStatus (int), body (array) extract from the response
      */
-    public function retrievePlans(string $lang, string $status = 'active', string $limit = '10', string $offset, string $apiVersion = 'v1')
+    public function retrievePlans(string $lang, string $status = 'active', string $limit = '10', string $offset = null, string $apiVersion = 'v1')
     {
         $this->setApiVersion($apiVersion);
         $this->setRoute('/products/' . $this->getModuleName() . '/plans?status=' . $status . '&lang_iso_code=' . $lang . '&limit=' . $limit . ($offset ? '&offset=' . $offset : ''));
