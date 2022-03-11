@@ -19,7 +19,7 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
 
-namespace PrestaShop\PsBilling\Service;
+namespace PrestaShop\PsBilling\Services;
 
 use PrestaShop\PsBilling\Clients\BillingClient;
 use PrestaShop\PsBilling\Exceptions\BillingApiException;
