@@ -34,11 +34,11 @@ class BillingClient extends GenericClient
      * @return void
      */
     public function __construct(
-        string $moduleName,
+        $moduleName,
         Client $client = null,
-        string $apiUrl = null,
-        string $token = null,
-        bool $isSandbox = null
+        $apiUrl = null,
+        $token = null,
+        $isSandbox = null
     ) {
         parent::__construct();
 

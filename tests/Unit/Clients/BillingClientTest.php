@@ -251,7 +251,7 @@ class BillingClientTest extends TestCase
      * @param  Response $response
      * @return BillingClient
      */
-    private function getBillingClient(Response $response): BillingClient
+    private function getBillingClient(Response $response)
     {
         $this->container = [];
         $history = Middleware::history($this->container);
