@@ -39,7 +39,6 @@ class HttpResponseHandler
     public function handleResponse(Response $response)
     {
         $responseContents = json_decode($response->getBody()->getContents(), true);
-
         return [
             'success' => $this->responseIsSuccessful($response->getStatusCode()),
             'httpStatus' => $response->getStatusCode(),
