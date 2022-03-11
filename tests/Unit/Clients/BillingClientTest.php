@@ -15,6 +15,7 @@ class BillingClientTest extends TestCase
     protected $customer;
     protected $subscription;
     protected $plans;
+    protected $container;
 
     protected function setUp(): void
     {
@@ -175,11 +176,12 @@ class BillingClientTest extends TestCase
 
     public function testRetrieveCustomerById()
     {
-        $instance = $this->getBillingClientAndContainer(new Response(200, [], json_encode($this->customer)));
-        $result = $instance['billingClient']->retrieveCustomerById('b2581e4b-0030-4fc8-9bf2-7f01c550a946');
+        $billingClient = $this->getBillingClient(new Response(200, [], json_encode($this->customer)));
+        $result = $billingClient->retrieveCustomerById('b2581e4b-0030-4fc8-9bf2-7f01c550a946');
+
 
         // Test the call made by the methods
-        // $this->assertEquals(count($instance['container']), 1);
+        $this->assertEquals(count($this->container), 1);
 
         // Test the format and the content
         $this->assertEquals($result['success'], true);
@@ -189,11 +191,11 @@ class BillingClientTest extends TestCase
 
     public function testRetrieveSubscriptionByCustomerId()
     {
-        $instance = $this->getBillingClientAndContainer(new Response(200, [], json_encode($this->subscription)));
-        $result = $instance['billingClient']->retrieveCustomerById('b2581e4b-0030-4fc8-9bf2-7f01c550a946');
+        $billingClient = $this->getBillingClient(new Response(200, [], json_encode($this->subscription)));
+        $result = $billingClient->retrieveCustomerById('b2581e4b-0030-4fc8-9bf2-7f01c550a946');
 
         // Test the call made by the methods
-        // $this->assertEquals(count($instance['container']), 1);
+        $this->assertEquals(count($this->container), 1);
 
         // Test the format and the content
         $this->assertEquals($result['success'], true);
@@ -203,11 +205,11 @@ class BillingClientTest extends TestCase
 
     public function testRetrievePlansShouldCallTheProperRoute()
     {
-        $instance = $this->getBillingClientAndContainer(new Response(200, [], json_encode($this->plans)));
-        $result = $instance['billingClient']->retrieveCustomerById('b2581e4b-0030-4fc8-9bf2-7f01c550a946');
+        $billingClient = $this->getBillingClient(new Response(200, [], json_encode($this->plans)));
+        $result = $billingClient->retrieveCustomerById('b2581e4b-0030-4fc8-9bf2-7f01c550a946');
 
         // Test the call made by the methods
-        // $this->assertEquals(count($instance['container']), 1);
+        $this->assertEquals(count($this->container), 1);
 
         // Test the format and the content
         $this->assertEquals($result['success'], true);
@@ -220,12 +222,12 @@ class BillingClientTest extends TestCase
      * getBillingClientAndContainer
      *
      * @param  Response $response
-     * @return array
+     * @return BillingClient
      */
-    private function getBillingClientAndContainer(Response $response): array
+    private function getBillingClient(Response $response): BillingClient
     {
-        $container = [];
-        $history = Middleware::history($container);
+        $this->container = [];
+        $history = Middleware::history($this->container);
         $mock = new MockHandler([
             $response,
         ]);
@@ -244,9 +246,6 @@ class BillingClientTest extends TestCase
                 ],
             ]
         ]);
-        return [
-            'billingClient' => new BillingClient('rbm_example', $client),
-            'container' => $container
-        ];
+        return new BillingClient('rbm_example', $client);
     }
 }
