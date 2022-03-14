@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright since 2007 PrestaShop SA and Contributors
  * PrestaShop is an International Registered Trademark & Property of PrestaShop SA
@@ -19,41 +18,34 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
 
-namespace PrestaShop\PsBilling\Clients\Handler;
+namespace PrestaShop\PsBilling\Builder;
 
-
-
-/**
- * HttpResponseHandler handle http call response
- */
-class HttpResponseHandler
+class EnvBuilder
 {
     /**
-     * Format api response.
-     * 
-     * @param $response
-     * 
-     * @return array
+     * @return string
      */
-    public function handleResponse($response)
+    public function buildBillingEnv(string $envName)
     {
-        $responseContents = json_decode($response->getBody()->getContents(), true);
-        return [
-            'success' => $this->responseIsSuccessful($response->getStatusCode()),
-            'httpStatus' => $response->getStatusCode(),
-            'body' => $responseContents,
-        ];
-    }
-
-    /**
-     * Check if the response is successful or not (response code 200 to 299).
-     *
-     * @param int $httpStatusCode
-     *
-     * @return bool
-     */
-    private function responseIsSuccessful($httpStatusCode)
-    {
-        return '2' === substr((string) $httpStatusCode, 0, 1);
+        switch ($envName) {
+            case 'development':
+                // Handle by .env in Billing UI
+                return null;
+            case 'integration':
+            case 'prestabulle1':
+            case 'prestabulle2':
+            case 'prestabulle3':
+            case 'prestabulle4':
+            case 'prestabulle5':
+            case 'prestabulle6':
+            case 'prestabulle7':
+            case 'prestabulle8':
+            case 'prestabulle9':
+            case 'preprod':
+                return $envName;
+                break;
+            default:
+                return 'production';
+        }
     }
 }

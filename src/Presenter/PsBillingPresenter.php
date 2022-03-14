@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright since 2007 PrestaShop SA and Contributors
  * PrestaShop is an International Registered Trademark & Property of PrestaShop SA
@@ -21,27 +22,12 @@
 namespace PrestaShop\PsBilling\Presenter;
 
 use Module;
-use PrestaShop\PsAccountsInstaller\Installer\Facade\PsAccounts;
 use PrestaShop\PsBilling\Builder\EnvBuilder;
 use PrestaShop\PsBilling\Builder\UrlBuilder;
-use PrestaShop\PsBilling\Config\Config;
+use PrestaShop\PsBilling\Wrappers\PsBillingAccountsWrapper;
 
-class BillingPresenter
+class PsBillingPresenter
 {
-    /**
-     * @var PsAccounts
-     */
-    private $psAccountsService;
-
-    /**
-     * @var \Module
-     */
-    private $module;
-
-    /**
-     * @var \Context
-     */
-    private $context;
 
     /**
      * @var EnvBuilder
@@ -54,6 +40,16 @@ class BillingPresenter
     private $urlBuilder;
 
     /**
+     * @var PsBillingService
+     */
+    private $billingAccountsWrapper;
+
+    /**
+     * @var \Module
+     */
+    private $module;
+
+    /**
      * Presenter constructor.
      *
      * @param \Module $module
@@ -61,20 +57,16 @@ class BillingPresenter
      * @param \Context|null $context
      */
     public function __construct(
-        PsAccounts $accountFacade = null,
-        Module $module,
-        \Context $context = null)
-    {
-        if (null === $context) {
-            $context = \Context::getContext();
-        }
-        $this->context = $context;
-        $this->module = $module;
+        PsBillingAccountsWrapper $billingAccountsWrapper = null,
+        Module $module
+    ) {
 
-        $this->envBuilder = new EnvBuilder();
-        $this->urlBuilder = new UrlBuilder();
+        $this->setModule($module);
 
-        $this->psAccountsService = ($accountFacade) ? $accountFacade->getPsAccountsService() : $this->getPsAccountsService();
+        $this->setEnvBuilder(new EnvBuilder());
+        $this->setUrlBuilder(new UrlBuilder());
+
+        $this->setBillingAccountsWrapper($billingAccountsWrapper);
     }
 
     /**
@@ -85,31 +77,31 @@ class BillingPresenter
     public function present(array $params)
     {
         $getEnv = !empty($params['billingEnv']) ? $params['billingEnv'] : '';
-        $billingEnv = $this->envBuilder->buildBillingEnv($getEnv);
+        $billingEnv = $this->getEnvBuilder()->buildBillingEnv($getEnv);
 
         return [
             'psBillingContext' => [
                 'context' => [
                     'billingEnv' => $billingEnv,
-                    'billingUIUrl' => $this->urlBuilder->buildUIUrl($billingEnv),
+                    'billingUIUrl' => $this->getUrlBuilder()->buildUIUrl($billingEnv),
                     'isSandbox' => !empty($params['sandbox']) ? (bool) $params['sandbox'] : false,
 
                     'versionPs' => _PS_VERSION_,
-                    'versionModule' => $this->module->version,
-                    'moduleName' => $this->module->name,
-                    'displayName' => $this->module->displayName,
+                    'versionModule' => $this->getModule()->version,
+                    'moduleName' => $this->getModule()->name,
+                    'displayName' => $this->getModule()->displayName,
 
                     'i18n' => [
                         'isoCode' => $this->getLanguageIsoCode(),
                     ],
 
-                    'refreshToken' => $this->getRefreshToken(),
+                    'refreshToken' => $this->getBillingAccountsWrapper()->getRefreshToken(),
                     'shop' => [
-                        'uuid' => $this->getShopUuid(),
+                        'uuid' => $this->getBillingAccountsWrapper()->getShopUuid(),
                     ],
                     'user' => [
                         'createdFromIp' => \Tools::getRemoteAddr(),
-                        'email' => $this->getEmail(),
+                        'email' => $this->getBillingAccountsWrapper()->getEmail(),
                     ],
 
                     'moduleLogo' => $this->encodeImage($this->getModuleLogo()),
@@ -168,80 +160,92 @@ class BillingPresenter
     }
 
     /**
-     * @return string|false
-     */
-    private function getShopUuid()
-    {
-        return method_exists($this->psAccountsService, 'getShopUuid') ?
-            $this->psAccountsService->getShopUuid() :
-            $this->psAccountsService->getShopUuidV4();
-    }
-
-    /**
-     * Get the user firebase token.
-     *
-     * @return string|null
-     */
-    private function getRefreshToken()
-    {
-        return $this->psAccountsService->getRefreshToken();
-    }
-
-    /**
-     * @return string|null
-     */
-    private function getEmail()
-    {
-        return $this->psAccountsService->getEmail();
-    }
-
-    /**
-     * Return an instance of PS Account module.
-     *
-     * @return Module|false
-     */
-    private function getAccountInstance()
-    {
-        return \Module::getInstanceByName(Config::PS_ACCOUNTS_MODULE_NAME);
-    }
-
-    /**
-     * @param string $serviceName
-     *
-     * @return mixed
-     */
-    private function getAccountService(string $serviceName)
-    {
-        return $this->getAccountInstance->getService($serviceName);
-    }
-
-    /**
-     * @return mixed
-     */
-    private function getPsAccountsService()
-    {
-        return $this->getAccountService(Config::PS_ACCOUNTS_SERVICE);
-    }
-
-    /**
-     * Get the isoCode from the context language, if null, send 'en' as default value
-     *
-     * @return string
-     */
-    private function getLanguageIsoCode()
-    {
-        return $this->context->language !== null ? $this->context->language->iso_code : Config::I18N_FALLBACK_LOCALE;
-    }
-
-    /**
      * @return string
      */
     private function getModuleLogo()
     {
-        if (@filemtime($this->module->getLocalPath() . 'logo.png')) {
-            return $this->module->getLocalPath() . 'logo.png';
+        if (@filemtime($this->getModule()->getLocalPath() . 'logo.png')) {
+            return $this->getModule()->getLocalPath() . 'logo.png';
         }
 
-        return $this->module->getLocalPath() . 'logo.gif';
+        return $this->getModule()->getLocalPath() . 'logo.gif';
+    }
+
+
+    /**
+     * setEnvBuilder
+     *
+     * @param  EnvBuilder $envBuilder
+     * @return void
+     */
+    private function setEnvBuilder($envBuilder)
+    {
+        $this->envBuilder = $envBuilder;
+    }
+    /**
+     * getEnvBuilder
+     *
+     * @return EnvBuilder
+     */
+    private function getEnvBuilder()
+    {
+        return $this->envBuilder;
+    }
+    /**
+     * setUrlBuilder
+     *
+     * @param  UrlBuilder $urlBuilder
+     * @return void
+     */
+    private function setUrlBuilder($urlBuilder)
+    {
+        $this->urlBuilder = $urlBuilder;
+    }
+    /**
+     * getUrlBuilder
+     *
+     * @return UrlBuilder
+     */
+    private function getUrlBuilder()
+    {
+        return $this->urlBuilder;
+    }
+    /**
+     * setBillingAccountsWrapper
+     *
+     * @param  PsBillingAccountsWrapper $billingAccountsWrapper
+     * @return void
+     */
+    private function setBillingAccountsWrapper($billingAccountsWrapper)
+    {
+        $this->billingAccountsWrapper = $billingAccountsWrapper;
+    }
+    /**
+     * getBillingAccountsWrapper
+     *
+     * @return PsBillingAccountsWrapper
+     */
+    private function getBillingAccountsWrapper()
+    {
+        return $this->billingAccountsWrapper;
+    }
+    /**
+     * setModule
+     *
+     * @param  \Module $module
+     * @return void
+     */
+    private function setModule($module)
+    {
+        $this->module = $module;
+    }
+    /**
+     * getModule
+     *
+     * @return \Module
+     */
+    private function getModule()
+    {
+        return $this->module;
     }
 }

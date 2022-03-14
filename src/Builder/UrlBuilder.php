@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright since 2007 PrestaShop SA and Contributors
  * PrestaShop is an International Registered Trademark & Property of PrestaShop SA
@@ -25,7 +26,7 @@ class UrlBuilder
     /**
      * @return string
      */
-    public function buildUIUrl(string $envName)
+    public function buildUIUrl($envName = null)
     {
         switch ($envName) {
             case 'development':
@@ -53,12 +54,39 @@ class UrlBuilder
         }
     }
 
-    // TODO: Build API URL
+
 
     /**
+     * buildAPIUrl
+     *
+     * @param  string $envName
      * @return string
      */
-    public function buildAPIUrl()
+    public function buildAPIUrl($envName = null)
     {
+        switch ($envName) {
+            case 'development':
+                // Handle by .env in Billing UI
+                return null;
+            case 'integration':
+                return 'https://billing-api.distribution-' . $envName . '.prestashop.net';
+                break;
+            case 'prestabulle1':
+            case 'prestabulle2':
+            case 'prestabulle3':
+            case 'prestabulle4':
+            case 'prestabulle5':
+            case 'prestabulle6':
+            case 'prestabulle7':
+            case 'prestabulle8':
+            case 'prestabulle9':
+                return 'https://billing-api-' . str_replace('prestabulle', 'psbulle', $envName) . '.distribution-integration.prestashop.net';
+                break;
+            case 'preprod':
+                return 'https://billing-api.distribution-' . $envName . '.prestashop.net';
+                break;
+            default:
+                return 'https://billing-api.distribution.prestashop.net';
+        }
     }
 }
