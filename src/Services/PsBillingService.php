@@ -57,16 +57,17 @@ class PsBillingService
     $billingEnv = null
   ) {
 
+    $this->setBillingAccountsWrapper($billingAccountsWrapper);
+
     $urlBuilder = new UrlBuilder();
 
     $this->setBillingClient(new BillingClient(
       $module->name,
       null,
-      $urlBuilder->buildAPIUrl('prestabulle2'),
-      $this->getAccessToken(),
+      $urlBuilder->buildAPIUrl($billingEnv),
+      $this->getBillingAccountsWrapper()->getAccessToken(),
       $isSandbox
     ));
-    $this->setBillingAccountsWrapper($billingAccountsWrapper);
     $this->setApiVersion($apiVersion);
   }
 

@@ -92,7 +92,7 @@ class PsBillingPresenter
                     'displayName' => $this->getModule()->displayName,
 
                     'i18n' => [
-                        'isoCode' => $this->getLanguageIsoCode(),
+                        'isoCode' => $this->getBillingAccountsWrapper()->getLanguageIsoCode(),
                     ],
 
                     'refreshToken' => $this->getBillingAccountsWrapper()->getRefreshToken(),
