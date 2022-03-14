@@ -76,7 +76,9 @@ class PsBillingPresenter
      */
     public function present(array $params)
     {
-        $getEnv = !empty($params['billingEnv']) ? $params['billingEnv'] : '';
+        $getEnv = $this->getBillingAccountsWrapper()->getBillingEnv()
+            ? $this->getBillingAccountsWrapper()->getBillingEnv()
+            : '';
         $billingEnv = $this->getEnvBuilder()->buildBillingEnv($getEnv);
 
         return [
@@ -84,7 +86,9 @@ class PsBillingPresenter
                 'context' => [
                     'billingEnv' => $billingEnv,
                     'billingUIUrl' => $this->getUrlBuilder()->buildUIUrl($billingEnv),
-                    'isSandbox' => !empty($params['sandbox']) ? (bool) $params['sandbox'] : false,
+                    'isSandbox' => $this->getBillingAccountsWrapper()->isSandbox()
+                        ? $this->getBillingAccountsWrapper()->isSandbox()
+                        : false,
 
                     'versionPs' => _PS_VERSION_,
                     'versionModule' => $this->getModule()->version,

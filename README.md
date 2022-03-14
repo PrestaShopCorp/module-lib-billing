@@ -25,9 +25,9 @@ services:
   ps_billings.facade:
     class: 'PrestaShop\PsBilling\Presenter\BillingPresenter'
     arguments:
-      - "@ps_accounts.facade"
-      - "@rbm_example.module"
-      - "@rbm_example.context"
+      - '@ps_accounts.facade'
+      - '@rbm_example.module'
+      - '@rbm_example.context'
 ```
 
 ## How to use it

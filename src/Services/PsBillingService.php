@@ -24,7 +24,6 @@ namespace PrestaShop\PsBilling\Services;
 use Module;
 use PrestaShop\PsBilling\Wrappers\PsBillingAccountsWrapper;
 use PrestaShop\PsBilling\Clients\BillingClient;
-use PrestaShop\PsBilling\Config\Config;
 use PrestaShop\PsBilling\Builder\UrlBuilder;
 
 class PsBillingService
@@ -52,9 +51,7 @@ class PsBillingService
   public function __construct(
     PsBillingAccountsWrapper $billingAccountsWrapper = null,
     Module $module,
-    $isSandbox = false,
-    $apiVersion = 'v1',
-    $billingEnv = null
+    $apiVersion = 'v1'
   ) {
 
     $this->setBillingAccountsWrapper($billingAccountsWrapper);
@@ -64,9 +61,9 @@ class PsBillingService
     $this->setBillingClient(new BillingClient(
       $module->name,
       null,
-      $urlBuilder->buildAPIUrl($billingEnv),
+      $urlBuilder->buildAPIUrl($this->getBillingAccountsWrapper()->getBillingEnv()),
       $this->getBillingAccountsWrapper()->getAccessToken(),
-      $isSandbox
+      $this->getBillingAccountsWrapper()->isSandbox()
     ));
     $this->setApiVersion($apiVersion);
   }

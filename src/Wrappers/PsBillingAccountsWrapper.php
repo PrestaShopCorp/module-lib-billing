@@ -32,17 +32,32 @@ class PsBillingAccountsWrapper
    */
   private $psAccountsService;
 
-
   /**
    * @var \Context
    */
   private $context;
+
+  /**
+   * Indicate whether you want to work with sandbox or not
+   * 
+   * @var bool
+   */
+  private $sandbox;
+
+  /**
+   * Indicate whether you want to work with sandbox or not
+   * 
+   * @var bool
+   */
+  private $billingEnv;
   /**
    * 
    */
   public function __construct(
     PsAccounts $accountFacade = null,
-    \Context $context = null
+    \Context $context = null,
+    $sandbox = false,
+    $billingEnv = null
   ) {
     if (null === $context) {
       $context = \Context::getContext();
@@ -51,6 +66,9 @@ class PsBillingAccountsWrapper
     $this->psAccountsService = $accountFacade
       ? $accountFacade->getPsAccountsService()
       : \Module::getInstanceByName(Config::PS_ACCOUNTS_MODULE_NAME)->getService(Config::PS_ACCOUNTS_SERVICE);
+
+    $this->setSandbox($sandbox);
+    $this->setBillingEnv($billingEnv);
   }
 
 
@@ -106,6 +124,24 @@ class PsBillingAccountsWrapper
   {
     return $this->getPsAccountService()->getEmail();
   }
+  /**
+   * getSandbox
+   *
+   * @return bool
+   */
+  public function isSandbox()
+  {
+    return $this->sandbox;
+  }
+  /**
+   * getBillingEnv
+   *
+   * @return string
+   */
+  public function getBillingEnv()
+  {
+    return $this->billingEnv;
+  }
 
   /**
    * Get the psAccountService
@@ -135,5 +171,26 @@ class PsBillingAccountsWrapper
   private function getContext()
   {
     return $this->context;
+  }
+
+  /**
+   * setSandbox
+   *
+   * @param  bool $sandbox
+   * @return void
+   */
+  private function setSandbox($sandbox)
+  {
+    $this->sandbox = $sandbox;
+  }
+  /**
+   * setBillingEnv
+   *
+   * @param  string $billingEnv
+   * @return void
+   */
+  private function setBillingEnv($billingEnv)
+  {
+    $this->billingEnv = $billingEnv;
   }
 }
