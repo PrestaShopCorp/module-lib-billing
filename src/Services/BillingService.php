@@ -57,19 +57,19 @@ class BillingService
 
         $urlBuilder = new UrlBuilder();
 
-        //
-        // If you want to specify your own API URL you should edit the common.yml
-        // file with the following code
-        // 
-        // ps_billings.service:
-        //   class: PrestaShopCorp\Billing\Services\BillingService
-        //   public: true
-        //   arguments:
-        //     - '@ps_billings.context_wrapper'
-        //     - '@rbm_example.module'
-        //     - 'v1'
-        //     - 'http://host.docker.internal:3000'
-        //
+        /*
+         If you want to specify your own API URL you should edit the common.yml
+         file with the following code
+
+         ps_billings.service:
+           class: PrestaShopCorp\Billing\Services\BillingService
+           public: true
+           arguments:
+             - '@ps_billings.context_wrapper'
+             - '@rbm_example.module'
+             - 'v1'
+             - 'http://host.docker.internal:3000'
+        */
         $this->setBillingClient(new BillingClient(
             $module->name,
             null,
