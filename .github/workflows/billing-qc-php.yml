@@ -53,7 +53,6 @@ jobs:
 
       - name: PHPUnit tests
         run: |
-          php --version
           wget -O phpunit https://phar.phpunit.de/phpunit-5.phar
           chmod +x phpunit
           ./phpunit tests
