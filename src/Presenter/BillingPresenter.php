@@ -74,9 +74,7 @@ class BillingPresenter
      */
     public function present(array $params)
     {
-        $getEnv = $this->getBillingContextWrapper()->getBillingEnv()
-            ? $this->getBillingContextWrapper()->getBillingEnv()
-            : '';
+        $getEnv = $this->getBillingContextWrapper()->getBillingEnv() ?: '';
         $billingEnv = $this->getEnvBuilder()->buildBillingEnv($getEnv);
 
         return [
