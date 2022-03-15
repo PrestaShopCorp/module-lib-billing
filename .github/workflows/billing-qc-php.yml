@@ -29,6 +29,10 @@ jobs:
     name: PHPUNIT
     runs-on: ubuntu-latest
     steps:
+      - name: Setup PHP with tools
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.3'
       - name: Checkout
         uses: actions/checkout@v2.0.0
 
@@ -50,6 +54,6 @@ jobs:
       - name: PHPUnit tests
         run: |
           php --version
-          wget -O phpunit https://phar.phpunit.de/phpunit-5.7.27.phar
+          wget -O phpunit https://phar.phpunit.de/phpunit-5.phar
           chmod +x phpunit
           ./phpunit tests
