@@ -48,6 +48,8 @@ class UrlBuilderTest extends TestCase
     {
         $builder = new UrlBuilder();
         $this->assertEquals($builder->buildAPIUrl('development'), null);
+        $this->assertEquals($builder->buildAPIUrl('development', 'https://www.w3schoo��ls.co�m'), 'https://www.w3schools.com');
+        $this->assertEquals($builder->buildAPIUrl('development', 'https://www.w3schools.com'), 'https://www.w3schools.com');
         $this->assertEquals($builder->buildAPIUrl('integration'), 'https://billing-api.distribution-integration.prestashop.net');
         $this->assertEquals($builder->buildAPIUrl('prestabulle1'), 'https://billing-api-psbulle1.distribution-integration.prestashop.net');
         $this->assertEquals($builder->buildAPIUrl('prestabulle2'), 'https://billing-api-psbulle2.distribution-integration.prestashop.net');

@@ -61,6 +61,15 @@ class BillingService
          If you want to specify your own API URL you should edit the common.yml
          file with the following code
 
+         ps_billings.context_wrapper:
+           class: 'PrestaShopCorp\Billing\Wrappers\BillingContextWrapper'
+           public: false
+           arguments:
+             - '@ps_accounts.facade'
+             - '@rbm_example.context'
+             - true # if true you are in sandbox mode, if false or empty not in sandbox
+             - 'development'
+
          ps_billings.service:
            class: PrestaShopCorp\Billing\Services\BillingService
            public: true
@@ -73,7 +82,7 @@ class BillingService
         $this->setBillingClient(new BillingClient(
             $module->name,
             null,
-            $apiUrl ?: $urlBuilder->buildAPIUrl($this->getBillingContextWrapper()->getBillingEnv()),
+            $urlBuilder->buildAPIUrl($this->getBillingContextWrapper()->getBillingEnv(), $apiUrl),
             $this->getBillingContextWrapper()->getAccessToken(),
             $this->getBillingContextWrapper()->isSandbox()
         ));

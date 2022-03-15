@@ -58,15 +58,15 @@ class UrlBuilder
      * buildAPIUrl
      *
      * @param string $envName
+     * @param string $apiUrl
      *
      * @return string
      */
-    public function buildAPIUrl($envName = null)
+    public function buildAPIUrl($envName = null, $apiUrl = null)
     {
         switch ($envName) {
             case 'development':
-                // Handle by .env in Billing UI
-                return null;
+                return $apiUrl ? filter_var($apiUrl, FILTER_SANITIZE_URL) : null;
             case 'integration':
                 return 'https://billing-api.distribution-' . $envName . '.prestashop.net';
                 break;
