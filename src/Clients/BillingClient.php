@@ -54,7 +54,7 @@ class BillingClient extends GenericClient
                     'headers' => [
                         'Accept' => 'application/json',
                         'Authorization' => 'Bearer ' . (string) $token,
-                        'User-Agent' => 'module-lib-billing (' .  $moduleName . ')'
+                        'User-Agent' => 'module-lib-billing (' . $moduleName . ')',
                     ],
                 ],
             ];
