@@ -24,7 +24,7 @@ namespace PrestaShopCorp\Billing\Services;
 use Module;
 use PrestaShopCorp\Billing\Builder\UrlBuilder;
 use PrestaShopCorp\Billing\Clients\BillingClient;
-use PrestaShopCorp\Billing\Wrappers\BillingAccountsWrapper;
+use PrestaShopCorp\Billing\Wrappers\BillingContextWrapper;
 
 class BillingService
 {
@@ -43,26 +43,26 @@ class BillingService
     private $apiVersion;
 
     /**
-     * @var BillingAccountsWrapper
+     * @var BillingContextWrapper
      */
-    private $billingAccountsWrapper;
+    private $billingContextWrapper;
 
     public function __construct(
-    BillingAccountsWrapper $billingAccountsWrapper = null,
-    Module $module,
-    $apiVersion = 'v1'
-  ) {
-        $this->setBillingAccountsWrapper($billingAccountsWrapper);
+        BillingContextWrapper $billingContextWrapper = null,
+        Module $module,
+        $apiVersion = 'v1'
+    ) {
+        $this->setBillingContextWrapper($billingContextWrapper);
 
         $urlBuilder = new UrlBuilder();
 
         $this->setBillingClient(new BillingClient(
-      $module->name,
-      null,
-      $urlBuilder->buildAPIUrl($this->getBillingAccountsWrapper()->getBillingEnv()),
-      $this->getBillingAccountsWrapper()->getAccessToken(),
-      $this->getBillingAccountsWrapper()->isSandbox()
-    ));
+            $module->name,
+            null,
+            $urlBuilder->buildAPIUrl($this->getBillingContextWrapper()->getBillingEnv()),
+            $this->getBillingContextWrapper()->getAccessToken(),
+            $this->getBillingContextWrapper()->isSandbox()
+        ));
         $this->setApiVersion($apiVersion);
     }
 
@@ -74,7 +74,7 @@ class BillingService
      */
     public function getCurrentCustomer()
     {
-        return $this->getBillingClient()->retrieveCustomerById($this->getBillingAccountsWrapper()->getShopUuid(), $this->getApiVersion());
+        return $this->getBillingClient()->retrieveCustomerById($this->getBillingContextWrapper()->getShopUuid(), $this->getApiVersion());
     }
 
     /**
@@ -85,7 +85,7 @@ class BillingService
      */
     public function getCurrentSubscription()
     {
-        return $this->getBillingClient()->retrieveSubscriptionByCustomerId($this->getBillingAccountsWrapper()->getShopUuid(), $this->getApiVersion());
+        return $this->getBillingClient()->retrieveSubscriptionByCustomerId($this->getBillingContextWrapper()->getShopUuid(), $this->getApiVersion());
     }
 
     /**
@@ -95,7 +95,7 @@ class BillingService
      */
     public function getModulePlans()
     {
-        return $this->getBillingClient()->retrievePlans($this->getBillingAccountsWrapper()->getLanguageIsoCode(), $this->getApiVersion());
+        return $this->getBillingClient()->retrievePlans($this->getBillingContextWrapper()->getLanguageIsoCode(), $this->getApiVersion());
     }
 
     /**
@@ -143,24 +143,24 @@ class BillingService
     }
 
     /**
-     * setBillingAccountsWrapper
+     * setBillingContextWrapper
      *
-     * @param BillingAccountsWrapper $billingAccountsWrapper
+     * @param BillingContextWrapper $billingContextWrapper
      *
      * @return void
      */
-    private function setBillingAccountsWrapper($billingAccountsWrapper)
+    private function setBillingContextWrapper($billingContextWrapper)
     {
-        $this->billingAccountsWrapper = $billingAccountsWrapper;
+        $this->billingContextWrapper = $billingContextWrapper;
     }
 
     /**
-     * getBillingAccountsWrapper
+     * getBillingContextWrapper
      *
-     * @return BillingAccountsWrapper
+     * @return BillingContextWrapper
      */
-    private function getBillingAccountsWrapper()
+    private function getBillingContextWrapper()
     {
-        return $this->billingAccountsWrapper;
+        return $this->billingContextWrapper;
     }
 }

@@ -24,7 +24,7 @@ namespace PrestaShopCorp\Billing\Presenter;
 use Module;
 use PrestaShopCorp\Billing\Builder\EnvBuilder;
 use PrestaShopCorp\Billing\Builder\UrlBuilder;
-use PrestaShopCorp\Billing\Wrappers\BillingAccountsWrapper;
+use PrestaShopCorp\Billing\Wrappers\BillingContextWrapper;
 
 class BillingPresenter
 {
@@ -39,9 +39,9 @@ class BillingPresenter
     private $urlBuilder;
 
     /**
-     * @var BillingAccountsWrapper
+     * @var BillingContextWrapper
      */
-    private $billingAccountsWrapper;
+    private $billingContextWrapper;
 
     /**
      * @var \Module
@@ -56,7 +56,7 @@ class BillingPresenter
      * @param \Context|null $context
      */
     public function __construct(
-        BillingAccountsWrapper $billingAccountsWrapper = null,
+        BillingContextWrapper $billingContextWrapper = null,
         Module $module
     ) {
         $this->setModule($module);
@@ -64,7 +64,7 @@ class BillingPresenter
         $this->setEnvBuilder(new EnvBuilder());
         $this->setUrlBuilder(new UrlBuilder());
 
-        $this->setBillingAccountsWrapper($billingAccountsWrapper);
+        $this->setBillingContextWrapper($billingContextWrapper);
     }
 
     /**
@@ -74,8 +74,8 @@ class BillingPresenter
      */
     public function present(array $params)
     {
-        $getEnv = $this->getBillingAccountsWrapper()->getBillingEnv()
-            ? $this->getBillingAccountsWrapper()->getBillingEnv()
+        $getEnv = $this->getBillingContextWrapper()->getBillingEnv()
+            ? $this->getBillingContextWrapper()->getBillingEnv()
             : '';
         $billingEnv = $this->getEnvBuilder()->buildBillingEnv($getEnv);
 
@@ -84,8 +84,8 @@ class BillingPresenter
                 'context' => [
                     'billingEnv' => $billingEnv,
                     'billingUIUrl' => $this->getUrlBuilder()->buildUIUrl($billingEnv),
-                    'isSandbox' => $this->getBillingAccountsWrapper()->isSandbox()
-                        ? $this->getBillingAccountsWrapper()->isSandbox()
+                    'isSandbox' => $this->getBillingContextWrapper()->isSandbox()
+                        ? $this->getBillingContextWrapper()->isSandbox()
                         : false,
 
                     'versionPs' => _PS_VERSION_,
@@ -94,16 +94,16 @@ class BillingPresenter
                     'displayName' => $this->getModule()->displayName,
 
                     'i18n' => [
-                        'isoCode' => $this->getBillingAccountsWrapper()->getLanguageIsoCode(),
+                        'isoCode' => $this->getBillingContextWrapper()->getLanguageIsoCode(),
                     ],
 
-                    'refreshToken' => $this->getBillingAccountsWrapper()->getRefreshToken(),
+                    'refreshToken' => $this->getBillingContextWrapper()->getRefreshToken(),
                     'shop' => [
-                        'uuid' => $this->getBillingAccountsWrapper()->getShopUuid(),
+                        'uuid' => $this->getBillingContextWrapper()->getShopUuid(),
                     ],
                     'user' => [
                         'createdFromIp' => \Tools::getRemoteAddr(),
-                        'email' => $this->getBillingAccountsWrapper()->getEmail(),
+                        'email' => $this->getBillingContextWrapper()->getEmail(),
                     ],
 
                     'moduleLogo' => $this->encodeImage($this->getModuleLogo()),
@@ -218,25 +218,25 @@ class BillingPresenter
     }
 
     /**
-     * setBillingAccountsWrapper
+     * setBillingContextWrapper
      *
-     * @param BillingAccountsWrapper $billingAccountsWrapper
+     * @param BillingContextWrapper $billingContextWrapper
      *
      * @return void
      */
-    private function setBillingAccountsWrapper($billingAccountsWrapper)
+    private function setBillingContextWrapper($billingContextWrapper)
     {
-        $this->billingAccountsWrapper = $billingAccountsWrapper;
+        $this->billingContextWrapper = $billingContextWrapper;
     }
 
     /**
-     * getBillingAccountsWrapper
+     * getBillingContextWrapper
      *
-     * @return BillingAccountsWrapper
+     * @return BillingContextWrapper
      */
-    private function getBillingAccountsWrapper()
+    private function getBillingContextWrapper()
     {
-        return $this->billingAccountsWrapper;
+        return $this->billingContextWrapper;
     }
 
     /**
