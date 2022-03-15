@@ -24,3 +24,35 @@ jobs:
         uses: actions/checkout@v2.0.0
       - name: Run PHP-CS-Fixer
         uses: prestashopcorp/github-action-php-cs-fixer@master
+
+  phpunit:
+    name: PHPUNIT
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup PHP with tools
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.3'
+      - name: Checkout
+        uses: actions/checkout@v2.0.0
+
+      - name: Cache vendor folder
+        uses: actions/cache@v1
+        with:
+          path: vendor
+          key: php-${{ hashFiles('composer.lock') }}
+
+      - name: Cache composer folder
+        uses: actions/cache@v1
+        with:
+          path: ~/.composer/cache
+          key: php-composer-cache
+
+      - name: Install dependencies
+        run: composer install
+
+      - name: PHPUnit tests
+        run: |
+          wget -O phpunit https://phar.phpunit.de/phpunit-5.phar
+          chmod +x phpunit
+          ./phpunit tests
