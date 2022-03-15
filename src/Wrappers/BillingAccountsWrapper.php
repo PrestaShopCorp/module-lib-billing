@@ -24,7 +24,7 @@ namespace PrestaShopCorp\Billing\Wrappers;
 use PrestaShop\PsAccountsInstaller\Installer\Facade\PsAccounts;
 use PrestaShopCorp\Billing\Config\Config;
 
-class PsBillingAccountsWrapper
+class BillingAccountsWrapper
 {
     /**
      * @var PsAccounts

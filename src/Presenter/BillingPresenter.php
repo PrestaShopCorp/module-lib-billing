@@ -24,9 +24,9 @@ namespace PrestaShopCorp\Billing\Presenter;
 use Module;
 use PrestaShopCorp\Billing\Builder\EnvBuilder;
 use PrestaShopCorp\Billing\Builder\UrlBuilder;
-use PrestaShopCorp\Billing\Wrappers\PsBillingAccountsWrapper;
+use PrestaShopCorp\Billing\Wrappers\BillingAccountsWrapper;
 
-class PsBillingPresenter
+class BillingPresenter
 {
     /**
      * @var EnvBuilder
@@ -39,7 +39,7 @@ class PsBillingPresenter
     private $urlBuilder;
 
     /**
-     * @var PsBillingService
+     * @var BillingAccountsWrapper
      */
     private $billingAccountsWrapper;
 
@@ -56,7 +56,7 @@ class PsBillingPresenter
      * @param \Context|null $context
      */
     public function __construct(
-        PsBillingAccountsWrapper $billingAccountsWrapper = null,
+        BillingAccountsWrapper $billingAccountsWrapper = null,
         Module $module
     ) {
         $this->setModule($module);
@@ -220,7 +220,7 @@ class PsBillingPresenter
     /**
      * setBillingAccountsWrapper
      *
-     * @param PsBillingAccountsWrapper $billingAccountsWrapper
+     * @param BillingAccountsWrapper $billingAccountsWrapper
      *
      * @return void
      */
@@ -232,7 +232,7 @@ class PsBillingPresenter
     /**
      * getBillingAccountsWrapper
      *
-     * @return PsBillingAccountsWrapper
+     * @return BillingAccountsWrapper
      */
     private function getBillingAccountsWrapper()
     {

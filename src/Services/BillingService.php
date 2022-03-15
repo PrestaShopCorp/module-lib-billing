@@ -24,9 +24,9 @@ namespace PrestaShopCorp\Billing\Services;
 use Module;
 use PrestaShopCorp\Billing\Builder\UrlBuilder;
 use PrestaShopCorp\Billing\Clients\BillingClient;
-use PrestaShopCorp\Billing\Wrappers\PsBillingAccountsWrapper;
+use PrestaShopCorp\Billing\Wrappers\BillingAccountsWrapper;
 
-class PsBillingService
+class BillingService
 {
     /**
      * Created to make billing API request
@@ -43,12 +43,12 @@ class PsBillingService
     private $apiVersion;
 
     /**
-     * @var PsBillingService
+     * @var BillingAccountsWrapper
      */
     private $billingAccountsWrapper;
 
     public function __construct(
-    PsBillingAccountsWrapper $billingAccountsWrapper = null,
+    BillingAccountsWrapper $billingAccountsWrapper = null,
     Module $module,
     $apiVersion = 'v1'
   ) {
@@ -145,7 +145,7 @@ class PsBillingService
     /**
      * setBillingAccountsWrapper
      *
-     * @param PsBillingAccountsWrapper $billingAccountsWrapper
+     * @param BillingAccountsWrapper $billingAccountsWrapper
      *
      * @return void
      */
@@ -157,7 +157,7 @@ class PsBillingService
     /**
      * getBillingAccountsWrapper
      *
-     * @return PsBillingAccountsWrapper
+     * @return BillingAccountsWrapper
      */
     private function getBillingAccountsWrapper()
     {
