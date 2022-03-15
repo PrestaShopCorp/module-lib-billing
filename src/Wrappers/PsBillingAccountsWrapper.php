@@ -26,171 +26,173 @@ use PrestaShop\PsBilling\Config\Config;
 
 class PsBillingAccountsWrapper
 {
+    /**
+     * @var PsAccounts
+     */
+    private $psAccountsService;
 
-  /**
-   * @var PsAccounts
-   */
-  private $psAccountsService;
+    /**
+     * @var \Context
+     */
+    private $context;
 
-  /**
-   * @var \Context
-   */
-  private $context;
+    /**
+     * Indicate whether you want to work with sandbox or not
+     *
+     * @var bool
+     */
+    private $sandbox;
 
-  /**
-   * Indicate whether you want to work with sandbox or not
-   * 
-   * @var bool
-   */
-  private $sandbox;
+    /**
+     * Indicate whether you want to work with sandbox or not
+     *
+     * @var bool
+     */
+    private $billingEnv;
 
-  /**
-   * Indicate whether you want to work with sandbox or not
-   * 
-   * @var bool
-   */
-  private $billingEnv;
-  /**
-   * 
-   */
-  public function __construct(
+    public function __construct(
     PsAccounts $accountFacade = null,
     \Context $context = null,
     $sandbox = false,
     $billingEnv = null
   ) {
-    if (null === $context) {
-      $context = \Context::getContext();
-    }
-    $this->setContext($context);
-    $this->psAccountsService = $accountFacade
+        if (null === $context) {
+            $context = \Context::getContext();
+        }
+        $this->setContext($context);
+        $this->psAccountsService = $accountFacade
       ? $accountFacade->getPsAccountsService()
       : \Module::getInstanceByName(Config::PS_ACCOUNTS_MODULE_NAME)->getService(Config::PS_ACCOUNTS_SERVICE);
 
-    $this->setSandbox($sandbox);
-    $this->setBillingEnv($billingEnv);
-  }
+        $this->setSandbox($sandbox);
+        $this->setBillingEnv($billingEnv);
+    }
 
-
-  /**
-   * Get the isoCode from the context language, if null, send 'en' as default value
-   *
-   * @return string
-   */
-  public function getLanguageIsoCode()
-  {
-    return $this->getContext()->language !== null
+    /**
+     * Get the isoCode from the context language, if null, send 'en' as default value
+     *
+     * @return string
+     */
+    public function getLanguageIsoCode()
+    {
+        return $this->getContext()->language !== null
       ? $this->getContext()->language->iso_code
       : Config::I18N_FALLBACK_LOCALE;
-  }
+    }
 
-  /**
-   * @return string|false
-   */
-  public function getShopUuid()
-  {
-    return method_exists($this->getPsAccountService(), 'getShopUuid') ?
+    /**
+     * @return string|false
+     */
+    public function getShopUuid()
+    {
+        return method_exists($this->getPsAccountService(), 'getShopUuid') ?
       $this->getPsAccountService()->getShopUuid() :
       $this->getPsAccountService()->getShopUuidV4();
-  }
+    }
 
-  /**
-   * Get the refresh token for connected user.
-   *
-   * @return string|null
-   */
-  public function getRefreshToken()
-  {
-    return $this->getPsAccountService()->getRefreshToken();
-  }
+    /**
+     * Get the refresh token for connected user.
+     *
+     * @return string|null
+     */
+    public function getRefreshToken()
+    {
+        return $this->getPsAccountService()->getRefreshToken();
+    }
 
+    /**
+     * Get the refresh token for connected user.
+     *
+     * @return string|null
+     */
+    public function getAccessToken()
+    {
+        return $this->getPsAccountService()->getOrRefreshToken();
+    }
 
-  /**
-   * Get the refresh token for connected user.
-   *
-   * @return string|null
-   */
-  public function getAccessToken()
-  {
-    return $this->getPsAccountService()->getOrRefreshToken();
-  }
+    /**
+     * Get the email for connected ueser.
+     *
+     * @return string|null
+     */
+    public function getEmail()
+    {
+        return $this->getPsAccountService()->getEmail();
+    }
 
-  /**
-   * Get the email for connected ueser.
-   * 
-   * @return string|null
-   */
-  public function getEmail()
-  {
-    return $this->getPsAccountService()->getEmail();
-  }
-  /**
-   * getSandbox
-   *
-   * @return bool
-   */
-  public function isSandbox()
-  {
-    return $this->sandbox;
-  }
-  /**
-   * getBillingEnv
-   *
-   * @return string
-   */
-  public function getBillingEnv()
-  {
-    return $this->billingEnv;
-  }
+    /**
+     * getSandbox
+     *
+     * @return bool
+     */
+    public function isSandbox()
+    {
+        return $this->sandbox;
+    }
 
-  /**
-   * Get the psAccountService
-   *
-   * @return PsAccounts
-   */
-  private function getPsAccountService()
-  {
-    return $this->psAccountsService;
-  }
+    /**
+     * getBillingEnv
+     *
+     * @return string
+     */
+    public function getBillingEnv()
+    {
+        return $this->billingEnv;
+    }
 
-  /**
-   * setContext
-   *
-   * @param  \Context $context
-   * @return void
-   */
-  private function setContext($context)
-  {
-    $this->context = $context;
-  }
-  /**
-   * getContext
-   *
-   * @return \Context
-   */
-  private function getContext()
-  {
-    return $this->context;
-  }
+    /**
+     * Get the psAccountService
+     *
+     * @return PsAccounts
+     */
+    private function getPsAccountService()
+    {
+        return $this->psAccountsService;
+    }
 
-  /**
-   * setSandbox
-   *
-   * @param  bool $sandbox
-   * @return void
-   */
-  private function setSandbox($sandbox)
-  {
-    $this->sandbox = $sandbox;
-  }
-  /**
-   * setBillingEnv
-   *
-   * @param  string $billingEnv
-   * @return void
-   */
-  private function setBillingEnv($billingEnv)
-  {
-    $this->billingEnv = $billingEnv;
-  }
+    /**
+     * setContext
+     *
+     * @param \Context $context
+     *
+     * @return void
+     */
+    private function setContext($context)
+    {
+        $this->context = $context;
+    }
+
+    /**
+     * getContext
+     *
+     * @return \Context
+     */
+    private function getContext()
+    {
+        return $this->context;
+    }
+
+    /**
+     * setSandbox
+     *
+     * @param bool $sandbox
+     *
+     * @return void
+     */
+    private function setSandbox($sandbox)
+    {
+        $this->sandbox = $sandbox;
+    }
+
+    /**
+     * setBillingEnv
+     *
+     * @param string $billingEnv
+     *
+     * @return void
+     */
+    private function setBillingEnv($billingEnv)
+    {
+        $this->billingEnv = $billingEnv;
+    }
 }

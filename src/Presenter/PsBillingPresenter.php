@@ -28,7 +28,6 @@ use PrestaShop\PsBilling\Wrappers\PsBillingAccountsWrapper;
 
 class PsBillingPresenter
 {
-
     /**
      * @var EnvBuilder
      */
@@ -60,7 +59,6 @@ class PsBillingPresenter
         PsBillingAccountsWrapper $billingAccountsWrapper = null,
         Module $module
     ) {
-
         $this->setModule($module);
 
         $this->setEnvBuilder(new EnvBuilder());
@@ -175,17 +173,18 @@ class PsBillingPresenter
         return $this->getModule()->getLocalPath() . 'logo.gif';
     }
 
-
     /**
      * setEnvBuilder
      *
-     * @param  EnvBuilder $envBuilder
+     * @param EnvBuilder $envBuilder
+     *
      * @return void
      */
     private function setEnvBuilder($envBuilder)
     {
         $this->envBuilder = $envBuilder;
     }
+
     /**
      * getEnvBuilder
      *
@@ -195,16 +194,19 @@ class PsBillingPresenter
     {
         return $this->envBuilder;
     }
+
     /**
      * setUrlBuilder
      *
-     * @param  UrlBuilder $urlBuilder
+     * @param UrlBuilder $urlBuilder
+     *
      * @return void
      */
     private function setUrlBuilder($urlBuilder)
     {
         $this->urlBuilder = $urlBuilder;
     }
+
     /**
      * getUrlBuilder
      *
@@ -214,16 +216,19 @@ class PsBillingPresenter
     {
         return $this->urlBuilder;
     }
+
     /**
      * setBillingAccountsWrapper
      *
-     * @param  PsBillingAccountsWrapper $billingAccountsWrapper
+     * @param PsBillingAccountsWrapper $billingAccountsWrapper
+     *
      * @return void
      */
     private function setBillingAccountsWrapper($billingAccountsWrapper)
     {
         $this->billingAccountsWrapper = $billingAccountsWrapper;
     }
+
     /**
      * getBillingAccountsWrapper
      *
@@ -233,16 +238,19 @@ class PsBillingPresenter
     {
         return $this->billingAccountsWrapper;
     }
+
     /**
      * setModule
      *
-     * @param  \Module $module
+     * @param \Module $module
+     *
      * @return void
      */
     private function setModule($module)
     {
         $this->module = $module;
     }
+
     /**
      * getModule
      *

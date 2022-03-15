@@ -21,8 +21,6 @@
 
 namespace PrestaShop\PsBilling\Clients\Handler;
 
-
-
 /**
  * HttpResponseHandler handle http call response
  */
@@ -30,14 +28,15 @@ class HttpResponseHandler
 {
     /**
      * Format api response.
-     * 
+     *
      * @param $response
-     * 
+     *
      * @return array
      */
     public function handleResponse($response)
     {
         $responseContents = json_decode($response->getBody()->getContents(), true);
+
         return [
             'success' => $this->responseIsSuccessful($response->getStatusCode()),
             'httpStatus' => $response->getStatusCode(),

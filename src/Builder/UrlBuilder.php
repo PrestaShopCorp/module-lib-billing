@@ -54,12 +54,11 @@ class UrlBuilder
         }
     }
 
-
-
     /**
      * buildAPIUrl
      *
-     * @param  string $envName
+     * @param string $envName
+     *
      * @return string
      */
     public function buildAPIUrl($envName = null)

@@ -51,9 +51,9 @@ class BillingClient extends GenericClient
                     'exceptions' => $this->catchExceptions,
                     'headers' => [
                         'Accept' => 'application/json',
-                        'Authorization' => 'Bearer ' . (string) $token
-                    ]
-                ]
+                        'Authorization' => 'Bearer ' . (string) $token,
+                    ],
+                ],
             ];
             if (true === $isSandbox) {
                 $clientParams['defaults']['headers']['Sandbox'] = 'true';
@@ -67,52 +67,57 @@ class BillingClient extends GenericClient
     /**
      * retrieveCustomerById
      *
-     * @param  string $customerId the shop id
-     * @param  string $apiVersion version of API to use (default: "v1")
+     * @param string $customerId the shop id
+     * @param string $apiVersion version of API to use (default: "v1")
+     *
      * @return array with success (bool), httpStatus (int), body (array) extract from the response
      */
     public function retrieveCustomerById(string $customerId, $apiVersion = 'v1')
     {
         $this->setApiVersion($apiVersion);
         $this->setRoute('/customers/' . $customerId);
+
         return $this->get();
     }
 
     /**
      * Retrieve the subscription of the customer for your module
      *
-     * @param  string $customerId the shop id
-     * @param  string $apiVersion version of API to use (default: "v1")
+     * @param string $customerId the shop id
+     * @param string $apiVersion version of API to use (default: "v1")
+     *
      * @return array with success (bool), httpStatus (int), body (array) extract from the response
      */
     public function retrieveSubscriptionByCustomerId(string $customerId, $apiVersion = 'v1')
     {
         $this->setApiVersion($apiVersion);
         $this->setRoute('/customers/' . $customerId . '/subscriptions/' . $this->getModuleName());
+
         return $this->get();
     }
 
     /**
      * Retrieve plans associated with the module
      *
-     * @param  string $lang the lang of the user
-     * @param  string $apiVersion version of API to use (default: "v1")
-     * @param  string $status whether you want to get only "active" plan, or the "archived", or both when set to null  (default: "active")
-     * @param  string $limit number of plan to return (default: "10")
-     * @param  string $offset pagination start (default: null)
-     * 
+     * @param string $lang the lang of the user
+     * @param string $apiVersion version of API to use (default: "v1")
+     * @param string $status whether you want to get only "active" plan, or the "archived", or both when set to null  (default: "active")
+     * @param string $limit number of plan to return (default: "10")
+     * @param string $offset pagination start (default: null)
+     *
      * @return array with success (bool), httpStatus (int), body (array) extracted from the response
      */
     public function retrievePlans(string $lang, $apiVersion = 'v1', $status = 'active', $limit = '10', $offset = null)
     {
         $this->setApiVersion($apiVersion);
         $this->setRoute('/products/' . $this->getModuleName() . '/plans?status=' . $status . '&lang_iso_code=' . $lang . '&limit=' . $limit . ($offset ? '&offset=' . $offset : ''));
+
         return $this->get();
     }
 
     /**
      * Technical name of the module
-     * 
+     *
      * @var string
      */
     private $moduleName;
@@ -126,10 +131,12 @@ class BillingClient extends GenericClient
     {
         return $this->moduleName;
     }
+
     /**
      * Setter for moduleName
      *
-     * @param  string $moduleName
+     * @param string $moduleName
+     *
      * @return void
      */
     private function setModuleName(string $moduleName)

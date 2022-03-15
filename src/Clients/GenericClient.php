@@ -58,7 +58,6 @@ abstract class GenericClient
      */
     protected $timeout = 10;
 
-
     /**
      * Version of the API
      *
@@ -84,6 +83,7 @@ abstract class GenericClient
     {
         $response = $this->getClient()->get($this->concatApiVersionAndRoute(), $options);
         $responseHandler = new HttpResponseHandler();
+
         return $responseHandler->handleResponse($response);
     }
 
@@ -187,7 +187,7 @@ abstract class GenericClient
 
     /**
      * Getter for apiVersion.
-     * 
+     *
      * @return string
      */
     protected function getApiVersion()
@@ -205,6 +205,7 @@ abstract class GenericClient
         if ($this->getApiVersion()) {
             return $this->getApiVersion() . $this->getRoute();
         }
+
         return $this->getRoute();
     }
 }

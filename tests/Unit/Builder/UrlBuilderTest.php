@@ -21,8 +21,8 @@
 
 namespace PrestaShop\PsBilling\Tests\Unit\Builder;
 
-use PrestaShop\PsBilling\Builder\UrlBuilder;
 use PHPUnit\Framework\TestCase;
+use PrestaShop\PsBilling\Builder\UrlBuilder;
 
 class UrlBuilderTest extends TestCase
 {

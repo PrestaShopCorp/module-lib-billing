@@ -16,6 +16,6 @@
     "guzzlehttp/guzzle": "^7.4"
   },
   "require-dev": {
-    "prestashop/php-dev-tools": "^4.2.1"
+    "prestashop/php-dev-tools": "^4.2"
   }
 }

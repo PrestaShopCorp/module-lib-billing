@@ -50,6 +50,12 @@ For example in your main module's class `getContent` method.
 
 ## Contribute
 
+### Code style
+
+```
+php vendor/bin/php-cs-fixer fix
+```
+
 ### Automatic tests
 
 #### Install
