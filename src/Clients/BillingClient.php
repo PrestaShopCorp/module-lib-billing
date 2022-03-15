@@ -28,7 +28,8 @@ use GuzzleHttp\Client;
  */
 class BillingClient extends GenericClient
 {
-    const DEFAULT_API_VERSION ='v1';
+    public const DEFAULT_API_VERSION = 'v1';
+
     /**
      * Constructor with parameters
      *
