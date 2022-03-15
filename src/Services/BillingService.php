@@ -50,7 +50,7 @@ class BillingService
     public function __construct(
         BillingContextWrapper $billingContextWrapper = null,
         Module $module,
-        $apiVersion = 'v1'
+        $apiVersion = BillingClient::DEFAULT_API_VERSION
     ) {
         $this->setBillingContextWrapper($billingContextWrapper);
 

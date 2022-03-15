@@ -28,6 +28,7 @@ use GuzzleHttp\Client;
  */
 class BillingClient extends GenericClient
 {
+    const DEFAULT_API_VERSION ='v1';
     /**
      * Constructor with parameters
      *
@@ -72,7 +73,7 @@ class BillingClient extends GenericClient
      *
      * @return array with success (bool), httpStatus (int), body (array) extract from the response
      */
-    public function retrieveCustomerById(string $customerId, $apiVersion = 'v1')
+    public function retrieveCustomerById(string $customerId, $apiVersion = self::DEFAULT_API_VERSION)
     {
         $this->setApiVersion($apiVersion);
         $this->setRoute('/customers/' . $customerId);
@@ -88,7 +89,7 @@ class BillingClient extends GenericClient
      *
      * @return array with success (bool), httpStatus (int), body (array) extract from the response
      */
-    public function retrieveSubscriptionByCustomerId(string $customerId, $apiVersion = 'v1')
+    public function retrieveSubscriptionByCustomerId(string $customerId, $apiVersion = self::DEFAULT_API_VERSION)
     {
         $this->setApiVersion($apiVersion);
         $this->setRoute('/customers/' . $customerId . '/subscriptions/' . $this->getModuleName());
@@ -107,7 +108,7 @@ class BillingClient extends GenericClient
      *
      * @return array with success (bool), httpStatus (int), body (array) extracted from the response
      */
-    public function retrievePlans(string $lang, $apiVersion = 'v1', $status = 'active', $limit = '10', $offset = null)
+    public function retrievePlans(string $lang, $apiVersion = self::DEFAULT_API_VERSION, $status = 'active', $limit = '10', $offset = null)
     {
         $this->setApiVersion($apiVersion);
         $this->setRoute('/products/' . $this->getModuleName() . '/plans?status=' . $status . '&lang_iso_code=' . $lang . '&limit=' . $limit . ($offset ? '&offset=' . $offset : ''));
