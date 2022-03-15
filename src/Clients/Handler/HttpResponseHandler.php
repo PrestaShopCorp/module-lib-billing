@@ -19,7 +19,7 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
 
-namespace PrestaShop\PsBilling\Clients\Handler;
+namespace PrestaShopCorp\Billing\Clients\Handler;
 
 /**
  * HttpResponseHandler handle http call response

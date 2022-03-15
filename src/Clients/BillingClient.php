@@ -19,7 +19,7 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
 
-namespace PrestaShop\PsBilling\Clients;
+namespace PrestaShopCorp\Billing\Clients;
 
 use GuzzleHttp\Client;
 

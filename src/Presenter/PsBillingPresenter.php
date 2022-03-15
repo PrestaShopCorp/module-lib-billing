@@ -19,12 +19,12 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
 
-namespace PrestaShop\PsBilling\Presenter;
+namespace PrestaShopCorp\Billing\Presenter;
 
 use Module;
-use PrestaShop\PsBilling\Builder\EnvBuilder;
-use PrestaShop\PsBilling\Builder\UrlBuilder;
-use PrestaShop\PsBilling\Wrappers\PsBillingAccountsWrapper;
+use PrestaShopCorp\Billing\Builder\EnvBuilder;
+use PrestaShopCorp\Billing\Builder\UrlBuilder;
+use PrestaShopCorp\Billing\Wrappers\PsBillingAccountsWrapper;
 
 class PsBillingPresenter
 {

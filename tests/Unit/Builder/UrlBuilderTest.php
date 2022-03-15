@@ -19,10 +19,10 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
 
-namespace PrestaShop\PsBilling\Tests\Unit\Builder;
+namespace PrestaShopCorp\Billing\Tests\Unit\Builder;
 
 use PHPUnit\Framework\TestCase;
-use PrestaShop\PsBilling\Builder\UrlBuilder;
+use PrestaShopCorp\Billing\Builder\UrlBuilder;
 
 class UrlBuilderTest extends TestCase
 {

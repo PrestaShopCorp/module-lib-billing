@@ -19,12 +19,12 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
 
-namespace PrestaShop\PsBilling\Services;
+namespace PrestaShopCorp\Billing\Services;
 
 use Module;
-use PrestaShop\PsBilling\Builder\UrlBuilder;
-use PrestaShop\PsBilling\Clients\BillingClient;
-use PrestaShop\PsBilling\Wrappers\PsBillingAccountsWrapper;
+use PrestaShopCorp\Billing\Builder\UrlBuilder;
+use PrestaShopCorp\Billing\Clients\BillingClient;
+use PrestaShopCorp\Billing\Wrappers\PsBillingAccountsWrapper;
 
 class PsBillingService
 {

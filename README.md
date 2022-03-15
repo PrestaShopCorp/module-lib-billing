@@ -23,7 +23,7 @@ services:
   # PS Billing
 
   ps_billings.facade:
-    class: 'PrestaShop\PsBilling\Presenter\BillingPresenter'
+    class: 'PrestaShopCorp\Billing\Presenter\BillingPresenter'
     arguments:
       - '@ps_accounts.facade'
       - '@rbm_example.module'

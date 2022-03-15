@@ -19,10 +19,10 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
 
-namespace PrestaShop\PsBilling\Wrappers;
+namespace PrestaShopCorp\Billing\Wrappers;
 
 use PrestaShop\PsAccountsInstaller\Installer\Facade\PsAccounts;
-use PrestaShop\PsBilling\Config\Config;
+use PrestaShopCorp\Billing\Config\Config;
 
 class PsBillingAccountsWrapper
 {

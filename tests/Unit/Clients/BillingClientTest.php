@@ -1,6 +1,6 @@
 <?php
 
-namespace PrestaShop\PsBilling\Tests\Unit\Client;
+namespace PrestaShopCorp\Billing\Tests\Unit\Client;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
@@ -8,7 +8,7 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
-use PrestaShop\PsBilling\Clients\BillingClient;
+use PrestaShopCorp\Billing\Clients\BillingClient;
 
 class BillingClientTest extends TestCase
 {
