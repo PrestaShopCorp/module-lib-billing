@@ -51,18 +51,16 @@ class BillingContextWrapper
     private $billingEnv;
 
     public function __construct(
-    PsAccounts $accountFacade = null,
-    \Context $context = null,
-    $sandbox = false,
-    $billingEnv = null
-  ) {
+        PsAccounts $accountFacade = null,
+        \Context $context = null,
+        $sandbox = false,
+        $billingEnv = null
+    ) {
         if (null === $context) {
             $context = \Context::getContext();
         }
         $this->setContext($context);
-        $this->psAccountsService = $accountFacade
-      ? $accountFacade->getPsAccountsService()
-      : \Module::getInstanceByName(Config::PS_ACCOUNTS_MODULE_NAME)->getService(Config::PS_ACCOUNTS_SERVICE);
+        $this->psAccountsService = $accountFacade ? $accountFacade->getPsAccountsService() : \Module::getInstanceByName(Config::PS_ACCOUNTS_MODULE_NAME)->getService(Config::PS_ACCOUNTS_SERVICE);
 
         $this->setSandbox($sandbox);
         $this->setBillingEnv($billingEnv);
@@ -75,9 +73,7 @@ class BillingContextWrapper
      */
     public function getLanguageIsoCode()
     {
-        return $this->getContext()->language !== null
-      ? $this->getContext()->language->iso_code
-      : Config::I18N_FALLBACK_LOCALE;
+        return $this->getContext()->language !== null ? $this->getContext()->language->iso_code : Config::I18N_FALLBACK_LOCALE;
     }
 
     /**
@@ -85,9 +81,7 @@ class BillingContextWrapper
      */
     public function getShopUuid()
     {
-        return method_exists($this->getPsAccountService(), 'getShopUuid') ?
-      $this->getPsAccountService()->getShopUuid() :
-      $this->getPsAccountService()->getShopUuidV4();
+        return method_exists($this->getPsAccountService(), 'getShopUuid') ? $this->getPsAccountService()->getShopUuid() : $this->getPsAccountService()->getShopUuidV4();
     }
 
     /**
