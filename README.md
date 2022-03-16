@@ -37,15 +37,14 @@ services:
 For example in your main module's class `getContent` method.
 
 ```php
-    Media::addJsDef($this->getService('ps_billings.facade')
-        ->present([
-            'sandbox' => true
-            'billingEnv' => 'preprod',
-            'logo' => '//yoururl.com/logo.svg',
-            'tosLink' => 'https://yoururl.com/tos',
-            'emailSupport' => 'youremail@yourdomain.ltd',
-        ]),
-    );
+// Billing
+$billingFacade = $this->getService('ps_billings.facade');
+
+Media::addJsDef($billingFacade->present([
+  'logo' => $this->getLocalPath() . 'views/img/partnerLogo.png';,
+  'tosLink' => 'https://yoururl/',
+  'emailSupport' => 'you@email',
+]));
 ```
 
 ## Contribute
