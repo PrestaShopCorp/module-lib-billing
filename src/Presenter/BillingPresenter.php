@@ -94,7 +94,7 @@ class BillingPresenter
                     'quantity' => !empty($params['quantity']) ? (int) $params['quantity'] : 1,
                     // TODO: Will be removed when we provide a new button component
                     'planIdSelected' => !empty($params['planIdSelected']) ? pSQL($params['planIdSelected']) : null,
-                    'byPassSelection' => !empty($params['byPass']) ? (bool) $params['byPass'] : false,
+                    'byPassSelection' => !empty($params['byPassSelection']) ? (bool) $params['byPassSelection'] : false,
 
                     'i18n' => [
                         'isoCode' => $this->getBillingContextWrapper()->getLanguageIsoCode(),
