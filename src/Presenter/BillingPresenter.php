@@ -131,19 +131,19 @@ class BillingPresenter
         if (empty($params['emailSupport'])) {
             throw new BillingContextException('"emailSupport" must be provided (value=' . $params['emailSupport'] . ')');
         }
-        if (\Validate::isEmail($params['emailSupport'])) {
+        if (!\Validate::isEmail($params['emailSupport'])) {
             throw new BillingContextException('"emailSupport" must be a valid email (value=' . $params['emailSupport'] . ')');
         }
         if (empty($params['tosLink'])) {
             throw new BillingContextException('"tosLink" must be provided (value=' . $params['tosLink'] . ')');
         }
-        if (\Validate::isUrl($params['tosLink'])) {
+        if (!\Validate::isUrl($params['tosLink'])) {
             throw new BillingContextException('"tosLink" must be a valid url (value=' . $params['tosLink'] . ')');
         }
         if (empty($params['privacyLink'])) {
             throw new BillingContextException('"tosLink" must be provided (value=' . $params['tosLink'] . ')');
         }
-        if (\Validate::isUrl($params['privacyLink'])) {
+        if (!\Validate::isUrl($params['privacyLink'])) {
             throw new BillingContextException('"privacyLink" must be a valid url (value=' . $params['privacyLink'] . ')');
         }
     }
