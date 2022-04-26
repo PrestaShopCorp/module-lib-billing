@@ -44,7 +44,7 @@ For example in your main module's class `getContent` method.
             'logo' => '//yoururl.com/logo.svg',
             'tosLink' => 'https://yoururl.com/tos',
             'emailSupport' => 'youremail@yourdomain.ltd',
-        ]),
+        ])
     );
 ```
 
