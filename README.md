@@ -39,7 +39,7 @@ For example in your main module's class `getContent` method.
 ```php
     Media::addJsDef($this->getService('ps_billings.facade')
         ->present([
-            'sandbox' => true
+            'sandbox' => true,
             'billingEnv' => 'preprod',
             'logo' => '//yoururl.com/logo.svg',
             'tosLink' => 'https://yoururl.com/tos',
