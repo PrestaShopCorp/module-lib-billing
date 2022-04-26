@@ -117,13 +117,13 @@ class BillingPresenter
         ];
     }
 
-    
     /**
      * Validate the args pass to the method "present" above
      *
-     * @param  mixed $params
+     * @param mixed $params
+     *
      * @return void
-     * 
+     *
      * @throws BillingContextException when some data are missing
      */
     private function validateContextArgs(array $params)
