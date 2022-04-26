@@ -24,8 +24,8 @@ namespace PrestaShopCorp\Billing\Presenter;
 use Module;
 use PrestaShopCorp\Billing\Builder\EnvBuilder;
 use PrestaShopCorp\Billing\Builder\UrlBuilder;
-use PrestaShopCorp\Billing\Wrappers\BillingContextWrapper;
 use PrestaShopCorp\Billing\Exception\BillingContextException;
+use PrestaShopCorp\Billing\Wrappers\BillingContextWrapper;
 
 class BillingPresenter
 {
@@ -128,28 +128,22 @@ class BillingPresenter
      */
     private function validateContextArgs(array $params)
     {
-        if(empty($params['emailSupport']))
-        {
+        if (empty($params['emailSupport'])) {
             throw new BillingContextException('"emailSupport" must be provided (value=' . $params['emailSupport'] . ')');
         }
-        if(\Validate::isEmail($params['emailSupport']))
-        {
+        if (\Validate::isEmail($params['emailSupport'])) {
             throw new BillingContextException('"emailSupport" must be a valid email (value=' . $params['emailSupport'] . ')');
         }
-        if(empty($params['tosLink']))
-        {
+        if (empty($params['tosLink'])) {
             throw new BillingContextException('"tosLink" must be provided (value=' . $params['tosLink'] . ')');
         }
-        if(\Validate::isUrl($params['tosLink']))
-        {
+        if (\Validate::isUrl($params['tosLink'])) {
             throw new BillingContextException('"tosLink" must be a valid url (value=' . $params['tosLink'] . ')');
         }
-        if(empty($params['privacyLink']))
-        {
+        if (empty($params['privacyLink'])) {
             throw new BillingContextException('"tosLink" must be provided (value=' . $params['tosLink'] . ')');
         }
-        if(\Validate::isUrl($params['privacyLink']))
-        {
+        if (\Validate::isUrl($params['privacyLink'])) {
             throw new BillingContextException('"privacyLink" must be a valid url (value=' . $params['privacyLink'] . ')');
         }
     }
