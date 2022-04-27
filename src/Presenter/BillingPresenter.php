@@ -141,7 +141,7 @@ class BillingPresenter
             throw new BillingContextException('"tosLink" must be a valid url (value=' . $params['tosLink'] . ')');
         }
         if (empty($params['privacyLink'])) {
-            throw new BillingContextException('"tosLink" must be provided (value=' . $params['tosLink'] . ')');
+            throw new BillingContextException('"privacyLink" must be provided (value=' . $params['privacyLink'] . ')');
         }
         if (!\Validate::isUrl($params['privacyLink'])) {
             throw new BillingContextException('"privacyLink" must be a valid url (value=' . $params['privacyLink'] . ')');
