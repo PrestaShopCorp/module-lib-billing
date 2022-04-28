@@ -24,6 +24,7 @@ namespace PrestaShopCorp\Billing\Presenter;
 use Module;
 use PrestaShopCorp\Billing\Builder\EnvBuilder;
 use PrestaShopCorp\Billing\Builder\UrlBuilder;
+use PrestaShopCorp\Billing\Exception\BillingContextException;
 use PrestaShopCorp\Billing\Wrappers\BillingContextWrapper;
 
 class BillingPresenter
@@ -74,6 +75,8 @@ class BillingPresenter
      */
     public function present(array $params)
     {
+        $this->validateContextArgs($params);
+
         $getEnv = $this->getBillingContextWrapper()->getBillingEnv() ?: '';
         $billingEnv = $this->getEnvBuilder()->buildBillingEnv($getEnv);
 
@@ -106,13 +109,43 @@ class BillingPresenter
 
                     'moduleLogo' => $this->encodeImage($this->getModuleLogo()),
                     'partnerLogo' => !empty($params['logo']) ? $this->encodeImage($params['logo']) : '',
-                    // TODO: Use \Validate::isUrl($params['tosLink']) throws error
                     'moduleTosUrl' => !empty($params['tosLink']) ? $params['tosLink'] : '',
-                    // TODO: Use \Validate::isEmail($params['emailSupport']) throws error
+                    'modulePrivacysUrl' => !empty($params['privacyLink']) ? $params['privacyLink'] : '',
                     'emailSupport' => !empty($params['emailSupport']) ? $params['emailSupport'] : '',
                 ],
             ],
         ];
+    }
+
+    /**
+     * Validate the args pass to the method "present" above
+     *
+     * @param mixed $params
+     *
+     * @return void
+     *
+     * @throws BillingContextException when some data are missing
+     */
+    private function validateContextArgs(array $params)
+    {
+        if (empty($params['emailSupport'])) {
+            throw new BillingContextException('"emailSupport" must be provided (value=' . $params['emailSupport'] . ')');
+        }
+        if (!\Validate::isEmail($params['emailSupport'])) {
+            throw new BillingContextException('"emailSupport" must be a valid email (value=' . $params['emailSupport'] . ')');
+        }
+        if (empty($params['tosLink'])) {
+            throw new BillingContextException('"tosLink" must be provided (value=' . $params['tosLink'] . ')');
+        }
+        if (!\Validate::isAbsoluteUrl($params['tosLink'])) {
+            throw new BillingContextException('"tosLink" must be a valid url (value=' . $params['tosLink'] . ')');
+        }
+        if (empty($params['privacyLink'])) {
+            throw new BillingContextException('"privacyLink" must be provided (value=' . $params['privacyLink'] . ')');
+        }
+        if (!\Validate::isAbsoluteUrl($params['privacyLink'])) {
+            throw new BillingContextException('"privacyLink" must be a valid url (value=' . $params['privacyLink'] . ')');
+        }
     }
 
     /**
