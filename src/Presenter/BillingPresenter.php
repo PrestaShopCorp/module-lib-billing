@@ -110,7 +110,7 @@ class BillingPresenter
                     'moduleLogo' => $this->encodeImage($this->getModuleLogo()),
                     'partnerLogo' => !empty($params['logo']) ? $this->encodeImage($params['logo']) : '',
                     'moduleTosUrl' => !empty($params['tosLink']) ? $params['tosLink'] : '',
-                    'modulePrivacysUrl' => !empty($params['privacyLink']) ? $params['privacyLink'] : '',
+                    'modulePrivacyUrl' => !empty($params['privacyLink']) ? $params['privacyLink'] : '',
                     'emailSupport' => !empty($params['emailSupport']) ? $params['emailSupport'] : '',
                 ],
             ],
