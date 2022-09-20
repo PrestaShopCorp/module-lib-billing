@@ -21,7 +21,9 @@
 
 namespace PrestaShopCorp\Billing\Clients;
 
-use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Request;
+use Psr\Http\Client\ClientInterface;
+
 use PrestaShopCorp\Billing\Clients\Handler\HttpResponseHandler;
 
 /**
@@ -81,9 +83,9 @@ abstract class GenericClient
      */
     protected function get(array $options = [])
     {
-        $response = $this->getClient()->get($this->concatApiVersionAndRoute(), $options);
-        $responseHandler = new HttpResponseHandler();
+        $response = $this->getClient()->sendRequest(new Request('GET', $this->concatApiVersionAndRoute(), $options));
 
+        $responseHandler = new HttpResponseHandler();
         return $responseHandler->handleResponse($response);
     }
 
@@ -92,7 +94,7 @@ abstract class GenericClient
      *
      * @return void
      */
-    protected function setClient(Client $client)
+    protected function setClient(ClientInterface $client)
     {
         $this->client = $client;
     }
@@ -158,7 +160,7 @@ abstract class GenericClient
     /**
      * Getter for client.
      *
-     * @return Client
+     * @return ClientInterface
      */
     public function getClient()
     {

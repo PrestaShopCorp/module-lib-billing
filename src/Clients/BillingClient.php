@@ -21,7 +21,7 @@
 
 namespace PrestaShopCorp\Billing\Clients;
 
-use GuzzleHttp\Client;
+use Prestashop\ModuleLibGuzzleAdapter\ClientFactory;
 
 /**
  * BillingClient low level client to access to billing API routes
@@ -61,7 +61,7 @@ class BillingClient extends GenericClient
             if (true === $isSandbox) {
                 $clientParams['defaults']['headers']['Sandbox'] = 'true';
             }
-            $client = new Client($clientParams);
+            $client = (new ClientFactory())->getClient($clientParams);
         }
         $this->setClient($client);
         $this->setModuleName($moduleName);
