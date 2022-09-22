@@ -75,7 +75,7 @@ class BillingClient extends GenericClient
      *
      * @return array with success (bool), httpStatus (int), body (array) extract from the response
      */
-    public function retrieveCustomerById(string $customerId, $apiVersion = self::DEFAULT_API_VERSION)
+    public function retrieveCustomerById($customerId, $apiVersion = self::DEFAULT_API_VERSION)
     {
         $this->setApiVersion($apiVersion);
         $this->setRoute('/customers/' . $customerId);
@@ -91,7 +91,7 @@ class BillingClient extends GenericClient
      *
      * @return array with success (bool), httpStatus (int), body (array) extract from the response
      */
-    public function retrieveSubscriptionByCustomerId(string $customerId, $apiVersion = self::DEFAULT_API_VERSION)
+    public function retrieveSubscriptionByCustomerId($customerId, $apiVersion = self::DEFAULT_API_VERSION)
     {
         $this->setApiVersion($apiVersion);
         $this->setRoute('/customers/' . $customerId . '/subscriptions/' . $this->getModuleName());
@@ -110,7 +110,7 @@ class BillingClient extends GenericClient
      *
      * @return array with success (bool), httpStatus (int), body (array) extracted from the response
      */
-    public function retrievePlans(string $lang, $apiVersion = self::DEFAULT_API_VERSION, $status = 'active', $limit = '10', $offset = null)
+    public function retrievePlans($lang, $apiVersion = self::DEFAULT_API_VERSION, $status = 'active', $limit = '10', $offset = null)
     {
         $this->setApiVersion($apiVersion);
         $this->setRoute('/products/' . $this->getModuleName() . '/plans?status=' . $status . '&lang_iso_code=' . $lang . '&limit=' . $limit . ($offset ? '&offset=' . $offset : ''));
@@ -142,7 +142,7 @@ class BillingClient extends GenericClient
      *
      * @return void
      */
-    private function setModuleName(string $moduleName)
+    private function setModuleName($moduleName)
     {
         $this->moduleName = $moduleName;
     }

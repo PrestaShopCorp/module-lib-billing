@@ -128,7 +128,7 @@ class BillingService
      *
      * @return void
      */
-    public function setApiVersion(string $apiVersion)
+    public function setApiVersion($apiVersion)
     {
         $this->apiVersion = $apiVersion;
     }
