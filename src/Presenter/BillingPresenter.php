@@ -170,7 +170,7 @@ class BillingPresenter
      *
      * @return string
      */
-    private function getMimeTypeByExtension($fileName)
+    private function getMimeTypeByExtension(string $fileName)
     {
         $types = [
             'image/gif' => ['gif'],
@@ -211,7 +211,7 @@ class BillingPresenter
      *
      * @return void
      */
-    private function setEnvBuilder($envBuilder)
+    private function setEnvBuilder(EnvBuilder $envBuilder)
     {
         $this->envBuilder = $envBuilder;
     }
@@ -233,7 +233,7 @@ class BillingPresenter
      *
      * @return void
      */
-    private function setUrlBuilder($urlBuilder)
+    private function setUrlBuilder(UrlBuilder $urlBuilder)
     {
         $this->urlBuilder = $urlBuilder;
     }
@@ -255,7 +255,7 @@ class BillingPresenter
      *
      * @return void
      */
-    private function setBillingContextWrapper($billingContextWrapper)
+    private function setBillingContextWrapper(BillingContextWrapper $billingContextWrapper)
     {
         $this->billingContextWrapper = $billingContextWrapper;
     }
@@ -277,7 +277,7 @@ class BillingPresenter
      *
      * @return void
      */
-    private function setModule($module)
+    private function setModule(Module $module)
     {
         $this->module = $module;
     }

@@ -61,7 +61,7 @@ class BillingService
          If you want to specify your own API URL you should edit the common.yml
          file with the following code
 
-         PrestaShopCorp\Billing\Wrappers\BillingContextWrapper:
+         ps_billings.context_wrapper:
            class: 'PrestaShopCorp\Billing\Wrappers\BillingContextWrapper'
            public: false
            arguments:
@@ -74,7 +74,7 @@ class BillingService
            class: PrestaShopCorp\Billing\Services\BillingService
            public: true
            arguments:
-             - '@PrestaShopCorp\Billing\Wrappers\BillingContextWrapper'
+             - '@ps_billings.context_wrapper'
              - '@rbm_example.module'
              - 'v1'
              - 'http://host.docker.internal:3000'
@@ -172,7 +172,7 @@ class BillingService
      *
      * @return void
      */
-    private function setBillingContextWrapper($billingContextWrapper)
+    private function setBillingContextWrapper(BillingContextWrapper $billingContextWrapper)
     {
         $this->billingContextWrapper = $billingContextWrapper;
     }

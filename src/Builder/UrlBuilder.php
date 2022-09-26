@@ -26,7 +26,7 @@ class UrlBuilder
     /**
      * @return string
      */
-    public function buildUIUrl($envName = null)
+    public function buildUIUrl(string $envName = null)
     {
         switch ($envName) {
             case 'development':
@@ -62,7 +62,7 @@ class UrlBuilder
      *
      * @return string
      */
-    public function buildAPIUrl($envName = null, $apiUrl = null)
+    public function buildAPIUrl(string $envName = null, $apiUrl = null)
     {
         switch ($envName) {
             case 'development':
