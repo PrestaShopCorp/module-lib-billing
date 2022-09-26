@@ -28,7 +28,7 @@ use Prestashop\ModuleLibGuzzleAdapter\ClientFactory;
  */
 class BillingClient extends GenericClient
 {
-    const DEFAULT_API_VERSION = 'v1';
+    public const DEFAULT_API_VERSION = 'v1';
 
     /**
      * Constructor with parameters
@@ -75,7 +75,7 @@ class BillingClient extends GenericClient
      *
      * @return array with success (bool), httpStatus (int), body (array) extract from the response
      */
-    public function retrieveCustomerById(string $customerId, $apiVersion = self::DEFAULT_API_VERSION)
+    public function retrieveCustomerById(string $customerId, string $apiVersion = self::DEFAULT_API_VERSION)
     {
         $this->setApiVersion($apiVersion);
         $this->setRoute('/customers/' . $customerId);
@@ -91,7 +91,7 @@ class BillingClient extends GenericClient
      *
      * @return array with success (bool), httpStatus (int), body (array) extract from the response
      */
-    public function retrieveSubscriptionByCustomerId(string $customerId, $apiVersion = self::DEFAULT_API_VERSION)
+    public function retrieveSubscriptionByCustomerId(string $customerId, string $apiVersion = self::DEFAULT_API_VERSION)
     {
         $this->setApiVersion($apiVersion);
         $this->setRoute('/customers/' . $customerId . '/subscriptions/' . $this->getModuleName());
@@ -105,12 +105,12 @@ class BillingClient extends GenericClient
      * @param string $lang the lang of the user
      * @param string $apiVersion version of API to use (default: "v1")
      * @param string $status whether you want to get only "active" plan, or the "archived", or both when set to null  (default: "active")
-     * @param string $limit number of plan to return (default: "10")
+     * @param int $limit number of plan to return (default: "10")
      * @param string $offset pagination start (default: null)
      *
      * @return array with success (bool), httpStatus (int), body (array) extracted from the response
      */
-    public function retrievePlans(string $lang, $apiVersion = self::DEFAULT_API_VERSION, $status = 'active', $limit = '10', $offset = null)
+    public function retrievePlans(string $lang, string $apiVersion = self::DEFAULT_API_VERSION, string $status = 'active', int $limit = 10, string $offset = null)
     {
         $this->setApiVersion($apiVersion);
         $this->setRoute('/products/' . $this->getModuleName() . '/plans?status=' . $status . '&lang_iso_code=' . $lang . '&limit=' . $limit . ($offset ? '&offset=' . $offset : ''));

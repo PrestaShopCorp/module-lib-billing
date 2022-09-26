@@ -17,7 +17,7 @@ class BillingClientTest extends TestCase
     protected $plans;
     protected $container;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->customer = [

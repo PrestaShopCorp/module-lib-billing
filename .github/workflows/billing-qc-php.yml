@@ -1,40 +1,57 @@
 name: PsBilling Quality Control PHP
 
+concurrency:
+  group: qc-${{ github.ref }}
+
 on: [push]
 
 jobs:
   php-linter:
-    name: PHP Syntax check 5.6|7.2|7.3
+    name: PHP Syntax check 7.2|7.3|7.4|8.0|8.1
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.0.0
-      - name: PHP syntax checker 5.6
-        uses: prestashop/github-action-php-lint/5.6@master
+        uses: actions/checkout@v3
       - name: PHP syntax checker 7.2
         uses: prestashop/github-action-php-lint/7.2@master
       - name: PHP syntax checker 7.3
         uses: prestashop/github-action-php-lint/7.3@master
+      - name: PHP syntax checker 7.4
+        uses: prestashop/github-action-php-lint/7.4@master
+      - name: PHP syntax checker 8.0
+        uses: prestashop/github-action-php-lint/8.0@master
+      - name: PHP syntax checker 8.1
+        uses: prestashop/github-action-php-lint/8.1@master
 
   php-cs-fixer:
     name: PHP-CS-FIXER
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.0.0
+        uses: actions/checkout@v3
       - name: Run PHP-CS-Fixer
         uses: prestashopcorp/github-action-php-cs-fixer@master
 
   phpunit:
     name: PHPUNIT
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        version: [7.2, 7.3, 7.4, 8.0, 8.1]
     runs-on: ubuntu-latest
     steps:
       - name: Setup PHP with tools
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.3'
+          php-version: ${{ matrix.version }}
       - name: Checkout
-        uses: actions/checkout@v2.0.0
+        uses: actions/checkout@v3
+
+      - name: Get PHP version
+        id: php_version
+        run: |
+          PHP_VERSION=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;")
+          echo ::set-output name=VERSION::$PHP_VERSION
 
       - name: Cache vendor folder
         uses: actions/cache@v1
@@ -48,11 +65,18 @@ jobs:
           path: ~/.composer/cache
           key: php-composer-cache
 
+      - name: Update dependencies
+        run: composer update
+
       - name: Install dependencies
         run: composer install
 
       - name: PHPUnit tests
         run: |
-          wget -O phpunit https://phar.phpunit.de/phpunit-5.phar
+          if [[ ${{ steps.php_version.outputs.VERSION }} -gt "72" ]]; then
+            wget -O phpunit https://phar.phpunit.de/phpunit-9.phar
+          else
+            wget -O phpunit https://phar.phpunit.de/phpunit-8.phar
+          fi
           chmod +x phpunit
           ./phpunit tests
