@@ -21,8 +21,9 @@
 
 namespace PrestaShopCorp\Billing\Clients;
 
-use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Request;
 use PrestaShopCorp\Billing\Clients\Handler\HttpResponseHandler;
+use Psr\Http\Client\ClientInterface;
 
 /**
  * Construct the client used to make call to maasland.
@@ -81,7 +82,8 @@ abstract class GenericClient
      */
     protected function get(array $options = [])
     {
-        $response = $this->getClient()->get($this->concatApiVersionAndRoute(), $options);
+        $response = $this->getClient()->sendRequest(new Request('GET', $this->concatApiVersionAndRoute(), $options));
+
         $responseHandler = new HttpResponseHandler();
 
         return $responseHandler->handleResponse($response);
@@ -92,7 +94,7 @@ abstract class GenericClient
      *
      * @return void
      */
-    protected function setClient(Client $client)
+    protected function setClient(ClientInterface $client)
     {
         $this->client = $client;
     }
@@ -104,7 +106,7 @@ abstract class GenericClient
      *
      * @return void
      */
-    protected function setCatchExceptions($bool)
+    protected function setCatchExceptions(bool $bool)
     {
         $this->catchExceptions = $bool;
     }
@@ -116,7 +118,7 @@ abstract class GenericClient
      *
      * @return void
      */
-    protected function setRoute($route)
+    protected function setRoute(string $route)
     {
         $this->route = $route;
     }
@@ -128,7 +130,7 @@ abstract class GenericClient
      *
      * @return void
      */
-    protected function setTimeout($timeout)
+    protected function setTimeout(int $timeout)
     {
         $this->timeout = $timeout;
     }
@@ -158,7 +160,7 @@ abstract class GenericClient
     /**
      * Getter for client.
      *
-     * @return Client
+     * @return ClientInterface
      */
     public function getClient()
     {
