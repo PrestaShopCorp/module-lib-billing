@@ -44,39 +44,12 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.version }}
+
       - name: Checkout
         uses: actions/checkout@v3
-
-      - name: Get PHP version
-        id: php_version
-        run: |
-          PHP_VERSION=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;")
-          echo ::set-output name=VERSION::$PHP_VERSION
-
-      - name: Cache vendor folder
-        uses: actions/cache@v1
-        with:
-          path: vendor
-          key: php-${{ hashFiles('composer.lock') }}
-
-      - name: Cache composer folder
-        uses: actions/cache@v1
-        with:
-          path: ~/.composer/cache
-          key: php-composer-cache
-
-      - name: Update dependencies
-        run: composer update
 
       - name: Install dependencies
         run: composer install
 
-      - name: PHPUnit tests
-        run: |
-          if [[ ${{ steps.php_version.outputs.VERSION }} -gt "72" ]]; then
-            wget -O phpunit https://phar.phpunit.de/phpunit-9.phar
-          else
-            wget -O phpunit https://phar.phpunit.de/phpunit-8.phar
-          fi
-          chmod +x phpunit
-          ./phpunit tests
+      - name: Run PHPUnit
+        run: vendor/bin/phpunit tests

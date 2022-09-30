@@ -26,6 +26,7 @@
 vendor
 composer-dev.json
 composer-dev.lock
+composer.lock
 
 # CS Fixer
 .php-cs-fixer.cache
