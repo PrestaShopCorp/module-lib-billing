@@ -18,6 +18,7 @@
   "require-dev": {
     "prestashop/php-dev-tools": "^4.2",
     "php-http/mock-client": "^1.5",
-    "guzzlehttp/guzzle": "^7.4"
+    "guzzlehttp/guzzle": "^7.4",
+    "phpunit/phpunit": "^9.5|^8.5"
   }
 }
