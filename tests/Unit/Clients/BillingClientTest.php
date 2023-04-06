@@ -2,19 +2,14 @@
 
 namespace PrestaShopCorp\Billing\Tests\Unit\Client;
 
-
-use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Message\Response;
-use GuzzleHttp\Subscriber\Mock;
-use GuzzleHttp\Stream\Stream;
-use PHPUnit\Framework\TestCase;
-
-use Prestashop\ModuleLibGuzzleAdapter\Interfaces\HttpClientInterface;
-use Prestashop\ModuleLibGuzzleAdapter\ClientFactory;
-use PrestaShopCorp\Billing\Clients\BillingClient;
-
 use GuzzleHttp\Psr7\Response as Psr7Response;
+use GuzzleHttp\Stream\Stream;
+use GuzzleHttp\Subscriber\Mock;
+use PHPUnit\Framework\TestCase;
+use Prestashop\ModuleLibGuzzleAdapter\Interfaces\HttpClientInterface;
+use PrestaShopCorp\Billing\Clients\BillingClient;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
