@@ -48,8 +48,8 @@ class BillingService
     private $billingContextWrapper;
 
     public function __construct(
-        BillingContextWrapper $billingContextWrapper = null,
-        Module $module,
+        $billingContextWrapper = null,
+        $module,
         $apiVersion = BillingClient::DEFAULT_API_VERSION,
         $apiUrl = null
     ) {
@@ -150,7 +150,7 @@ class BillingService
      *
      * @return void
      */
-    public function setBillingClient(BillingClient $billingClient)
+    public function setBillingClient($billingClient)
     {
         $this->billingClient = $billingClient;
     }
