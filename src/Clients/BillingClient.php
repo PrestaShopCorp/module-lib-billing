@@ -28,7 +28,7 @@ use Prestashop\ModuleLibGuzzleAdapter\ClientFactory;
  */
 class BillingClient extends GenericClient
 {
-    public const DEFAULT_API_VERSION = 'v1';
+    const DEFAULT_API_VERSION = 'v1';
 
     /**
      * Constructor with parameters
