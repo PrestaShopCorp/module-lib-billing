@@ -49,7 +49,7 @@ class BillingService
 
     public function __construct(
         $billingContextWrapper = null,
-        $module,
+        $module = null,
         $apiVersion = BillingClient::DEFAULT_API_VERSION,
         $apiUrl = null
     ) {
