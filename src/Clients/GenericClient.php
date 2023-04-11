@@ -93,7 +93,7 @@ abstract class GenericClient
      *
      * @return void
      */
-    public function setClient($client)
+    protected function setClient($client)
     {
         $this->client = $client;
     }

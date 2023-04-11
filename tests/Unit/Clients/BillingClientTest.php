@@ -12,18 +12,19 @@ use Prestashop\ModuleLibGuzzleAdapter\Interfaces\HttpClientInterface;
 use PrestaShopCorp\Billing\Clients\BillingClient;
 use Psr\Http\Message\RequestInterface;
 
-class myClient implements HttpClientInterface
+class testClient extends Client implements HttpClientInterface
 {
     public static $response;
 
-    public function __construct($data)
+    public function __construct($configClient, $mockResponse)
     {
-        myClient::$response = $data;
+        parent::__construct($configClient);
+        testClient::$response = $mockResponse;
     }
 
     public function sendRequest(RequestInterface $request)
     {
-        return new Psr7Response(200, [], json_encode(myClient::$response));
+        return new Psr7Response(200, [], json_encode(testClient::$response));
     }
 }
 
@@ -192,8 +193,7 @@ class BillingClientTest extends TestCase
 
     public function testRetrieveCustomerById()
     {
-        $billingClient = $this->getBillingClient(new Response(200, [], Stream::factory(json_encode($this->customer))));
-        $billingClient->setClient(new myClient($this->customer));
+        $billingClient = $this->getBillingClient($this->customer);
         $result = $billingClient->retrieveCustomerById('b2581e4b-0030-4fc8-9bf2-7f01c550a946');
 
         // Test the format and the content
@@ -202,10 +202,10 @@ class BillingClientTest extends TestCase
         $this->assertEquals($result['body'], $this->customer);
     }
 
+
     public function testRetrieveSubscriptionByCustomerId()
     {
-        $billingClient = $this->getBillingClient(new Response(200, [], Stream::factory(json_encode($this->subscription))));
-        $billingClient->setClient(new myClient($this->subscription));
+        $billingClient = $this->getBillingClient($this->subscription);
         $result = $billingClient->retrieveSubscriptionByCustomerId('b2581e4b-0030-4fc8-9bf2-7f01c550a946');
 
         // Test the format and the content
@@ -216,8 +216,7 @@ class BillingClientTest extends TestCase
 
     public function testRetrievePlansShouldCallTheProperRoute()
     {
-        $billingClient = $this->getBillingClient(new Response(200, [], Stream::factory(json_encode($this->plans))));
-        $billingClient->setClient(new myClient($this->plans));
+        $billingClient = $this->getBillingClient($this->plans);
         $result = $billingClient->retrievePlans('fr');
 
         // Test the format and the content
@@ -229,17 +228,18 @@ class BillingClientTest extends TestCase
     /**
      * getBillingClientAndContainer
      *
-     * @param Response $response
+     * @param $mockData
      *
      * @return BillingClient
      */
-    private function getBillingClient(Response $response)
+    private function getBillingClient($mockData)
     {
+        $response = new Response(200, [], Stream::factory(json_encode($mockData)));
         $mock = new Mock([
             $response,
         ]);
 
-        $client = new Client([
+        $client = new testClient([
             'base_url' => 'http://localhost/',
             'defaults' => [
                 'timeout' => 20,
@@ -249,7 +249,7 @@ class BillingClientTest extends TestCase
                     'Authorization' => 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjM1MDM0MmIwMjU1MDAyYWI3NWUwNTM0YzU4MmVjYzY2Y2YwZTE3ZDIiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiUHJlc3RhU2hvcCIsImlzcyI6Imh0dHBzOi8vc2VjdXJldG9rZW4uZ29vZ2xlLmNvbS9wcmVzdGFzaG9wLXJlYWR5LXByb2QiLCJhdWQiOiJwcmVzdGFzaG9wLXJlYWR5LXByb2QiLCJhdXRoX3RpbWUiOjE2MzMxMDIzNzgsInVzZXJfaWQiOiJNbjZvdTg2dUFUUkJydFlqRlVua1pmNkZjNWUyIiwic3ViIjoiTW42b3U4NnVBVFJCcnRZakZVbmtaZjZGYzVlMiIsImlhdCI6MTYzMzcwNDcxNywiZXhwIjoxNjMzNzA4MzE3LCJlbWFpbCI6InRha2VzaGlfZGVtby1uaWFrX3ByZXN0YXNob3BfbmV0LTJhNjVhNDVhZUBwc2FjY291bnRzLnBzZXNzZW50aWFscy5uZXQiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsidGFrZXNoaV9kZW1vLW5pYWtfcHJlc3Rhc2hvcF9uZXQtMmE2NWE0NWFlQHBzYWNjb3VudHMucHNlc3NlbnRpYWxzLm5ldCJdfSwic2lnbl9pbl9wcm92aWRlciI6ImN1c3RvbSJ9fQ.WIqbDpoC_6o4eVfcr2RzJCQPz-IOFh9mtlOdhNOaNEu4cKJGPe7ARl_Sp36LsW0cuVePIijbWZiLubLXoycQ6W07KnBvR6SQ_3KpfxE5GUIFeGPsrNMPJ1qkvPDGOO_YEYp17oFQ5LYswq9-JeMWR3YbM4oENI6WD1jM5_iWaOY3BrdH5BRRraIwCVfiWsKuknTH-qEWU1AP2DNqtQstll8WOo01QAA-yocgS9zjoSJSBlqikdUoE3pYmH2C-fj5ZALEN4Qg27qchXW3L2wIc-16BQpqdnh2hst6kAB0pOcMi-G3UaXa569heoSBpf7Tu2gxdTgmNcbzubKrGMFLTg',
                 ],
             ],
-        ]);
+        ], $mockData);
 
         $client->getEmitter()->attach($mock);
 
