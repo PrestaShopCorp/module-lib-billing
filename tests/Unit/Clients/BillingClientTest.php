@@ -202,7 +202,6 @@ class BillingClientTest extends TestCase
         $this->assertEquals($result['body'], $this->customer);
     }
 
-
     public function testRetrieveSubscriptionByCustomerId()
     {
         $billingClient = $this->getBillingClient($this->subscription);
