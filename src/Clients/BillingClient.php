@@ -21,7 +21,7 @@
 
 namespace PrestaShopCorp\Billing\Clients;
 
-use GuzzleHttp\Client;
+use Prestashop\ModuleLibGuzzleAdapter\ClientFactory;
 
 /**
  * BillingClient low level client to access to billing API routes
@@ -61,7 +61,7 @@ class BillingClient extends GenericClient
             if (true === $isSandbox) {
                 $clientParams['defaults']['headers']['Sandbox'] = 'true';
             }
-            $client = new Client($clientParams);
+            $client = (new ClientFactory())->getClient($clientParams);
         }
         $this->setClient($client);
         $this->setModuleName($moduleName);
@@ -105,12 +105,12 @@ class BillingClient extends GenericClient
      * @param string $lang the lang of the user
      * @param string $apiVersion version of API to use (default: "v1")
      * @param string $status whether you want to get only "active" plan, or the "archived", or both when set to null  (default: "active")
-     * @param string $limit number of plan to return (default: "10")
+     * @param int $limit number of plan to return (default: "10")
      * @param string $offset pagination start (default: null)
      *
      * @return array with success (bool), httpStatus (int), body (array) extracted from the response
      */
-    public function retrievePlans($lang, $apiVersion = self::DEFAULT_API_VERSION, $status = 'active', $limit = '10', $offset = null)
+    public function retrievePlans($lang, $apiVersion = self::DEFAULT_API_VERSION, $status = 'active', $limit = 10, $offset = null)
     {
         $this->setApiVersion($apiVersion);
         $this->setRoute('/products/' . $this->getModuleName() . '/plans?status=' . $status . '&lang_iso_code=' . $lang . '&limit=' . $limit . ($offset ? '&offset=' . $offset : ''));

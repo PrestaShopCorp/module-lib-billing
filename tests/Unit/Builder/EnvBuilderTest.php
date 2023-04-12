@@ -25,7 +25,7 @@ class EnvBuilder
     /**
      * @return string
      */
-    public function buildBillingEnv(string $envName)
+    public function buildBillingEnv($envName)
     {
         switch ($envName) {
             case 'development':
