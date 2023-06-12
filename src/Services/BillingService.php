@@ -23,7 +23,8 @@ namespace PrestaShopCorp\Billing\Services;
 
 use Module;
 use PrestaShopCorp\Billing\Builder\UrlBuilder;
-use PrestaShopCorp\Billing\Clients\BillingClient;
+use PrestaShopCorp\Billing\Clients\BillingServiceSubscriptionClient;
+use PrestaShopCorp\Billing\Clients\BillingApiGatewayClient;
 use PrestaShopCorp\Billing\Wrappers\BillingContextWrapper;
 
 class BillingService
@@ -31,62 +32,81 @@ class BillingService
     /**
      * Created to make billing API request
      *
-     * @var BillingClient
+     * @var BillingServiceSubscriptionClient
      */
-    private $billingClient;
+    private $billingServiceSubscriptionClient;
 
     /**
      * Created to make billing API request
      *
-     * @var string
+     * @var BillingApiGatewayClient
      */
-    private $apiVersion;
+    private $billingApiGatewayClient;
 
     /**
      * @var BillingContextWrapper
      */
     private $billingContextWrapper;
 
+    /**
+     * @var Module
+     */
+    private $module;
+
+    /**
+     * @var UrlBuilder
+     */
+    private $urlBuilder;
+
+    /*
+        If you want to specify your own API URL you should edit the common.yml
+        file with the following code
+
+        ps_billings.context_wrapper:
+        class: 'PrestaShopCorp\Billing\Wrappers\BillingContextWrapper'
+        public: false
+        arguments:
+            - '@ps_accounts.facade'
+            - '@rbm_example.context'
+            - true # if true you are in sandbox mode, if false or empty not in sandbox
+            - 'development'
+
+        ps_billings.service:
+        class: PrestaShopCorp\Billing\Services\BillingService
+        public: true
+        arguments:
+            - '@ps_billings.context_wrapper'
+            - '@rbm_example.module'
+            - 'v1'
+            - 'http://host.docker.internal:3000'
+    */
     public function __construct(
         $billingContextWrapper = null,
         $module = null,
-        $apiVersion = BillingClient::DEFAULT_API_VERSION,
+        $apiVersion = null,
         $apiUrl = null
     ) {
-        $this->setBillingContextWrapper($billingContextWrapper);
+        $this->setBillingContextWrapper($billingContextWrapper)
+            ->setUrlBuilder(new UrlBuilder($this->getBillingContextWrapper()->getBillingEnv(), $apiUrl))
+            ->setModule($module);
 
-        $urlBuilder = new UrlBuilder();
+        $this->setBillingServiceSubscriptionClient(new BillingServiceSubscriptionClient([
+            'client' => null,
+            'moduleName' => $this->getModule()->name,
+            'apiUrl' => $this->getUrlBuilder()->buildAPIUrl(),
+            'apiVersion' => $apiVersion ?? BillingServiceSubscriptionClient::DEFAULT_API_VERSION,
+            'token' => $this->getBillingContextWrapper()->getAccessToken(),
+            'isSandbox' => $this->getBillingContextWrapper()->isSandbox(),
+        ]));
 
-        /*
-         If you want to specify your own API URL you should edit the common.yml
-         file with the following code
-
-         ps_billings.context_wrapper:
-           class: 'PrestaShopCorp\Billing\Wrappers\BillingContextWrapper'
-           public: false
-           arguments:
-             - '@ps_accounts.facade'
-             - '@rbm_example.context'
-             - true # if true you are in sandbox mode, if false or empty not in sandbox
-             - 'development'
-
-         ps_billings.service:
-           class: PrestaShopCorp\Billing\Services\BillingService
-           public: true
-           arguments:
-             - '@ps_billings.context_wrapper'
-             - '@rbm_example.module'
-             - 'v1'
-             - 'http://host.docker.internal:3000'
-        */
-        $this->setBillingClient(new BillingClient(
-            $module->name,
-            null,
-            $urlBuilder->buildAPIUrl($this->getBillingContextWrapper()->getBillingEnv(), $apiUrl),
-            $this->getBillingContextWrapper()->getAccessToken(),
-            $this->getBillingContextWrapper()->isSandbox()
-        ));
-        $this->setApiVersion($apiVersion);
+        $this->setBillingApiGatewayClient(new BillingApiGatewayClient([
+            'client' => null,
+            'moduleName' => $this->getModule()->name,
+            'apiUrl' => $this->getUrlBuilder()->buildAPIGatewayUrl(),
+            'apiVersion' => $apiVersion ?? BillingApiGatewayClient::DEFAULT_API_VERSION,
+            'token' => $this->getBillingContextWrapper()->getAccessToken(),
+            'isSandbox' => $this->getBillingContextWrapper()->isSandbox(),
+        ]));
     }
 
     /**
@@ -97,7 +117,7 @@ class BillingService
      */
     public function getCurrentCustomer()
     {
-        return $this->getBillingClient()->retrieveCustomerById($this->getBillingContextWrapper()->getShopUuid(), $this->getApiVersion());
+        return $this->getBillingServiceSubscriptionClient()->retrieveCustomerById($this->getBillingContextWrapper()->getShopUuid());
     }
 
     /**
@@ -108,61 +128,125 @@ class BillingService
      */
     public function getCurrentSubscription()
     {
-        return $this->getBillingClient()->retrieveSubscriptionByCustomerId($this->getBillingContextWrapper()->getShopUuid(), $this->getApiVersion());
+        return $this->getBillingServiceSubscriptionClient()->retrieveSubscriptionByCustomerId($this->getBillingContextWrapper()->getShopUuid());
     }
 
     /**
+     * @deprecated Please use getProductComponents() instead.
+     *
      * Retrieve the plans associated to this module
      *
      * @return array
      */
     public function getModulePlans()
     {
-        return $this->getBillingClient()->retrievePlans($this->getBillingContextWrapper()->getLanguageIsoCode(), $this->getApiVersion());
+        return $this->getBillingServiceSubscriptionClient()->retrievePlans($this->getBillingContextWrapper()->getLanguageIsoCode());
     }
 
     /**
-     * setApiVersion
      *
-     * @param string $apiVersion
+     * Retrieve product components associated to this module
+     *
+     * @return array
+     */
+    public function getProductComponents($componentType = 'plan')
+    {
+        return $this->getBillingApiGatewayClient()->retrieveProductComponents(
+            $this->getBillingContextWrapper()->getLanguageIsoCode(),
+            $componentType,
+        );
+    }
+
+    /**
+     * setModule
+     *
+     * @param string $module
      *
      * @return void
      */
-    public function setApiVersion($apiVersion)
+    private function setModule($module)
     {
-        $this->apiVersion = $apiVersion;
+        $this->module = $module;
+
+        return $this;
     }
 
     /**
-     * getApiVersion
+     * getModule
      *
-     * @return string
+     * @return Module
      */
-    private function getApiVersion()
+    private function getModule()
     {
-        return $this->apiVersion;
+        return $this->module;
     }
 
     /**
-     * setBillingClient
+     * setUrlBuilder
      *
-     * @param BillingClient $billingClient
+     * @param string $urlBuilder
      *
      * @return void
      */
-    public function setBillingClient($billingClient)
+    private function setUrlBuilder($urlBuilder)
     {
-        $this->billingClient = $billingClient;
+        $this->urlBuilder = $urlBuilder;
+
+        return $this;
     }
 
     /**
-     * getBillingClient
+     * getUrlBuilder
      *
-     * @return BillingClient
+     * @return UrlBuilder
      */
-    private function getBillingClient()
+    private function getUrlBuilder()
     {
-        return $this->billingClient;
+        return $this->urlBuilder;
+    }
+
+    /**
+     * setBillingServiceSubscriptionClient
+     *
+     * @param BillingServiceSubscriptionClient $billingClient
+     *
+     * @return void
+     */
+    private function setBillingServiceSubscriptionClient($billingClient)
+    {
+        $this->billingServiceSubscriptionClient = $billingClient;
+    }
+
+    /**
+     * getBillingServiceSubscriptionClient
+     *
+     * @return BillingServiceSubscriptionClient
+     */
+    private function getBillingServiceSubscriptionClient()
+    {
+        return $this->billingServiceSubscriptionClient;
+    }
+
+    /**
+     * setBillingApiGatewayClient
+     *
+     * @param BillingApiGatewayClient $billingClient
+     *
+     * @return void
+     */
+    private function setBillingApiGatewayClient($billingClient)
+    {
+        $this->billingApiGatewayClient = $billingClient;
+    }
+
+    /**
+     * getBillingApiGatewayClient
+     *
+     * @return BillingApiGatewayClient
+     */
+    private function getBillingApiGatewayClient()
+    {
+        return $this->billingApiGatewayClient;
     }
 
     /**

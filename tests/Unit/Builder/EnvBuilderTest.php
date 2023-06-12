@@ -18,34 +18,26 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
 
-namespace PrestaShopCorp\Billing\Builder;
+namespace PrestaShopCorp\Billing\Tests\Unit\Builder;
 
-class EnvBuilder
+use PHPUnit\Framework\TestCase;
+use PrestaShopCorp\Billing\Builder\EnvBuilder;
+
+class EnvBuilderTest extends TestCase
 {
-    /**
-     * @return string
-     */
-    public function buildBillingEnv($envName)
+    public function testBuildUIUrl()
     {
-        switch ($envName) {
-            case 'development':
-                // Handle by .env in Billing UI
-                return null;
-            case 'integration':
-            case 'prestabulle1':
-            case 'prestabulle2':
-            case 'prestabulle3':
-            case 'prestabulle4':
-            case 'prestabulle5':
-            case 'prestabulle6':
-            case 'prestabulle7':
-            case 'prestabulle8':
-            case 'prestabulle9':
-            case 'preprod':
-                return $envName;
-                break;
-            default:
-                return 'production';
-        }
+        $builder = new EnvBuilder();
+        $this->assertEquals($builder->buildBillingEnv('development'), null);
+        $this->assertEquals($builder->buildBillingEnv('integration'), 'integration');
+        $this->assertEquals($builder->buildBillingEnv('prestabulle1'), 'prestabulle1');
+        $this->assertEquals($builder->buildBillingEnv('prestabulle2'), 'prestabulle2');
+        $this->assertEquals($builder->buildBillingEnv('prestabulle3'), 'prestabulle3');
+        $this->assertEquals($builder->buildBillingEnv('prestabulle4'), 'prestabulle4');
+        $this->assertEquals($builder->buildBillingEnv('prestabulle5'), 'prestabulle5');
+        $this->assertEquals($builder->buildBillingEnv('prestabulle6'), 'prestabulle6');
+        $this->assertEquals($builder->buildBillingEnv('preprod'), 'preprod');
+        $this->assertEquals($builder->buildBillingEnv('unknown'), 'production');
+        $this->assertEquals($builder->buildBillingEnv(''), 'production');
     }
 }

@@ -23,17 +23,28 @@ namespace PrestaShopCorp\Billing\Builder;
 
 class UrlBuilder
 {
+    private $envName = null;
+    private $apiUrl = null;
+
+    public function __construct($envName = null, $apiUrl = null)
+    {
+        $this->envName = $envName;
+        $this->apiUrl = $apiUrl;
+    }
+
     /**
+     * buildUIUrl
+     *
      * @return string
      */
-    public function buildUIUrl($envName = null)
+    public function buildUIUrl()
     {
-        switch ($envName) {
+        switch ($this->getEnvName()) {
             case 'development':
                 // Handle by .env in Billing UI
                 return null;
             case 'integration':
-                return 'https://billing.distribution-' . $envName . '.prestashop.net';
+                return 'https://billing.distribution-' . $this->getEnvName() . '.prestashop.net';
                 break;
             case 'prestabulle1':
             case 'prestabulle2':
@@ -41,13 +52,10 @@ class UrlBuilder
             case 'prestabulle4':
             case 'prestabulle5':
             case 'prestabulle6':
-            case 'prestabulle7':
-            case 'prestabulle8':
-            case 'prestabulle9':
-                return 'https://billing-' . $envName . '.distribution-integration.prestashop.net';
+                return 'https://billing-' . $this->getEnvName() . '.distribution-integration.prestashop.net';
                 break;
             case 'preprod':
-                return 'https://billing.distribution-' . $envName . '.prestashop.net';
+                return 'https://billing.distribution-' . $this->getEnvName() . '.prestashop.net';
                 break;
             default:
                 return 'https://billing.distribution.prestashop.net';
@@ -57,18 +65,15 @@ class UrlBuilder
     /**
      * buildAPIUrl
      *
-     * @param string $envName
-     * @param string $apiUrl
-     *
      * @return string
      */
-    public function buildAPIUrl($envName = null, $apiUrl = null)
+    public function buildAPIUrl()
     {
-        switch ($envName) {
+        switch ($this->getEnvName()) {
             case 'development':
-                return $apiUrl ? filter_var($apiUrl, FILTER_SANITIZE_URL) : null;
+                return $this->getApiUrl() ? filter_var($this->getApiUrl(), FILTER_SANITIZE_URL) : null;
             case 'integration':
-                return 'https://billing-api.distribution-' . $envName . '.prestashop.net';
+                return 'https://billing-api.distribution-' . $this->getEnvName() . '.prestashop.net';
                 break;
             case 'prestabulle1':
             case 'prestabulle2':
@@ -76,16 +81,57 @@ class UrlBuilder
             case 'prestabulle4':
             case 'prestabulle5':
             case 'prestabulle6':
-            case 'prestabulle7':
-            case 'prestabulle8':
-            case 'prestabulle9':
-                return 'https://billing-api-' . str_replace('prestabulle', 'psbulle', $envName) . '.distribution-integration.prestashop.net';
+                return 'https://billing-api-' . str_replace('prestabulle', 'psbulle', $this->getEnvName()) . '.distribution-integration.prestashop.net';
                 break;
             case 'preprod':
-                return 'https://billing-api.distribution-' . $envName . '.prestashop.net';
+                return 'https://billing-api.distribution-' . $this->getEnvName() . '.prestashop.net';
                 break;
             default:
                 return 'https://billing-api.distribution.prestashop.net';
         }
+    }
+
+    /**
+     * buildAPIGatewayUrl
+     *
+     * @return string
+     */
+    public function buildAPIGatewayUrl()
+    {
+        switch ($this->getEnvName()) {
+            case 'development':
+                return $this->getApiUrl() ? filter_var($this->getApiUrl(), FILTER_SANITIZE_URL) : null;
+            case 'prestabulle1':
+            case 'prestabulle2':
+            case 'prestabulle3':
+            case 'prestabulle4':
+            case 'prestabulle5':
+            case 'prestabulle6':
+            case 'preprod':
+                return 'https://billing-api-gateway-' . $this->getEnvName() . '.prestashop.com';
+                break;
+            default:
+                return 'https://api.billing.prestashop.com';
+        }
+    }
+
+    /**
+     * getEnvName
+     *
+     * @return string
+     */
+    private function getEnvName()
+    {
+        return $this->envName;
+    }
+
+    /**
+     * getApiUrl
+     *
+     * @return string
+     */
+    private function getApiUrl()
+    {
+        return $this->apiUrl;
     }
 }

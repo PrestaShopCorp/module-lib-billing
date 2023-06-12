@@ -31,9 +31,6 @@ class Config
         'prestabulle4',
         'prestabulle5',
         'prestabulle6',
-        'prestabulle7',
-        'prestabulle8',
-        'prestabulle9',
         'preprod',
         'production',
     ];

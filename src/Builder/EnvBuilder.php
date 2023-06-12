@@ -38,9 +38,6 @@ class EnvBuilder
             case 'prestabulle4':
             case 'prestabulle5':
             case 'prestabulle6':
-            case 'prestabulle7':
-            case 'prestabulle8':
-            case 'prestabulle9':
             case 'preprod':
                 return $envName;
                 break;
