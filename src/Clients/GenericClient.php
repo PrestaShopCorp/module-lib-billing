@@ -128,8 +128,8 @@ abstract class GenericClient
         // Client can be provided for tests or some specific use case
         if (!isset($client) || null === $client) {
             $this->setClientUrl($apiUrl);
-            $this->setTimeout($timeout ? $timeout : $this->getTimeout());
-            $this->setCatchExceptions($catchExceptions ? $catchExceptions : $this->getCatchExceptions());
+            $this->setTimeout(isset($timeout) ? $timeout : $this->getTimeout());
+            $this->setCatchExceptions(isset($catchExceptions) ? $catchExceptions : $this->getCatchExceptions());
 
             $clientParams = [
                 'base_url' => $this->getClientUrl(),
