@@ -229,10 +229,10 @@ class BillingServiceSubscriptionClientTest extends TestCase
     }
 
     public function testThrowMandatoryParams()
-     {
+    {
         $this->expectException(MissingMandatoryParametersException::class);
         $client = new BillingServiceSubscriptionClient();
-     }
+    }
 
     /**
      * getBillingServiceSubscriptionClient

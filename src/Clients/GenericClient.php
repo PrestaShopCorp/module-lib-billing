@@ -23,8 +23,8 @@ namespace PrestaShopCorp\Billing\Clients;
 
 use GuzzleHttp\Psr7\Request;
 use Prestashop\ModuleLibGuzzleAdapter\ClientFactory;
-use PrestaShopCorp\Billing\Exception\MissingMandatoryParametersException;
 use PrestaShopCorp\Billing\Clients\Handler\HttpResponseHandler;
+use PrestaShopCorp\Billing\Exception\MissingMandatoryParametersException;
 
 /**
  * Construct the client used to make call to maasland.
@@ -108,7 +108,7 @@ abstract class GenericClient
         'isSandbox',
         'apiVersion',
         'timeout',
-        'catchExceptions'
+        'catchExceptions',
     ];
 
     /**
@@ -127,7 +127,6 @@ abstract class GenericClient
 
         // Client can be provided for tests or some specific use case
         if (!isset($client) || null === $client) {
-
             $this->setClientUrl($apiUrl);
             $this->setTimeout($timeout ? $timeout : $this->getTimeout());
             $this->setCatchExceptions($catchExceptions ? $catchExceptions : $this->getCatchExceptions());
@@ -250,7 +249,7 @@ abstract class GenericClient
     protected function setQueryParams(array $params)
     {
         $filteredParams = array_intersect_key($params, array_flip($this->possibleQueryParameters));
-        $this->queryParameters = '?'.http_build_query(array_merge($this->queryParameters, $filteredParams));
+        $this->queryParameters = '?' . http_build_query(array_merge($this->queryParameters, $filteredParams));
 
         return $this;
     }
@@ -306,6 +305,7 @@ abstract class GenericClient
         if ($this->getApiVersion()) {
             return $this->getApiVersion() . $this->route;
         }
+
         return $this->route;
     }
 
@@ -326,7 +326,7 @@ abstract class GenericClient
      */
     protected function getUrl()
     {
-        return $this->getClientUrl().$this->getRoute();
+        return $this->getClientUrl() . $this->getRoute();
     }
 
     /**

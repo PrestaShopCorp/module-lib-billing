@@ -10,7 +10,6 @@ use GuzzleHttp\Subscriber\Mock;
 use PHPUnit\Framework\TestCase;
 use Prestashop\ModuleLibGuzzleAdapter\Interfaces\HttpClientInterface;
 use PrestaShopCorp\Billing\Clients\BillingApiGatewayClient;
-use PrestaShopCorp\Billing\Exception\MissingMandatoryParametersException;
 use Psr\Http\Message\RequestInterface;
 
 class testApiGatewayClient extends Client implements HttpClientInterface
@@ -66,7 +65,7 @@ class BillingApiGatewayClientTest extends TestCase
                 'billingPeriodUnit' => 'month',
                 'freeQuantity' => 0,
                 'mandatoryComponentIds' => [],
-            ]],
+            ], ],
           'total' => 2,
         ];
 

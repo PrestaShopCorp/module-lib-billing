@@ -8,7 +8,7 @@ class MissingMandatoryParametersException extends \Exception
 
     /**
      * @param string[] $missingParameters
-     * @param int      $code
+     * @param int $code
      */
     public function __construct($missingParameters = null, $code = 0, $previous = null)
     {

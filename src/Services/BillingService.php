@@ -23,8 +23,8 @@ namespace PrestaShopCorp\Billing\Services;
 
 use Module;
 use PrestaShopCorp\Billing\Builder\UrlBuilder;
-use PrestaShopCorp\Billing\Clients\BillingServiceSubscriptionClient;
 use PrestaShopCorp\Billing\Clients\BillingApiGatewayClient;
+use PrestaShopCorp\Billing\Clients\BillingServiceSubscriptionClient;
 use PrestaShopCorp\Billing\Wrappers\BillingContextWrapper;
 
 class BillingService
@@ -144,7 +144,6 @@ class BillingService
     }
 
     /**
-     *
      * Retrieve product components associated to this module
      *
      * @return array
