@@ -152,7 +152,7 @@ class BillingService
     {
         return $this->getBillingApiGatewayClient()->retrieveProductComponents(
             $this->getBillingContextWrapper()->getLanguageIsoCode(),
-            $componentType,
+            $componentType
         );
     }
 
