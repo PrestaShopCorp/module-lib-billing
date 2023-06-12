@@ -18,5 +18,10 @@
   "require-dev": {
     "prestashop/php-dev-tools": "^3",
     "guzzlehttp/guzzle": "^5.3"
+  },
+  "config": {
+    "allow-plugins": {
+      "php-http/discovery": true
+    }
   }
 }
