@@ -2,7 +2,7 @@
 
 Utility package to retrieve SasS App module context and more
 
-[![Latest Stable Version](https://img.shields.io/packagist/v/prestashopcorp/module-lib-billing.svg?style=flat-square)](https://packagist.org/packages/prestashopcorp/module-lib-billing) [![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.2.5-8892BF.svg?style=flat-square)](https://php.net/) [![Quality Control Status](https://img.shields.io/github/workflow/status/prestashopcorp/module-lib-billing/PsBilling%20Quality%20Control%20PHP?style=flat-square)](https://github.com/PrestaShopCorp/module-lib-billing/actions/workflows/billing-qc-php.yml)
+[![Latest Stable Version](https://img.shields.io/packagist/v/prestashopcorp/module-lib-billing.svg?style=flat-square)](https://packagist.org/packages/prestashopcorp/module-lib-billing) [![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.2.5-8892BF.svg?style=flat-square)](https://php.net/) [![Quality Control PHP](https://github.com/PrestaShopCorp/module-lib-billing/actions/workflows/billing-qc-php.yml/badge.svg)](https://github.com/PrestaShopCorp/module-lib-billing/actions/workflows/billing-qc-php.yml)
 
 ## Installation
 
