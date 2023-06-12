@@ -258,6 +258,8 @@ class BillingService
     private function setBillingContextWrapper($billingContextWrapper)
     {
         $this->billingContextWrapper = $billingContextWrapper;
+
+        return $this;
     }
 
     /**
