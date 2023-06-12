@@ -94,7 +94,7 @@ class BillingService
             'client' => null,
             'moduleName' => $this->getModule()->name,
             'apiUrl' => $this->getUrlBuilder()->buildAPIUrl(),
-            'apiVersion' => $apiVersion ?? BillingServiceSubscriptionClient::DEFAULT_API_VERSION,
+            'apiVersion' => $apiVersion ? $apiVersion : BillingServiceSubscriptionClient::DEFAULT_API_VERSION,
             'token' => $this->getBillingContextWrapper()->getAccessToken(),
             'isSandbox' => $this->getBillingContextWrapper()->isSandbox(),
         ]));
@@ -103,7 +103,7 @@ class BillingService
             'client' => null,
             'moduleName' => $this->getModule()->name,
             'apiUrl' => $this->getUrlBuilder()->buildAPIGatewayUrl(),
-            'apiVersion' => $apiVersion ?? BillingApiGatewayClient::DEFAULT_API_VERSION,
+            'apiVersion' => $apiVersion ? $apiVersion : BillingApiGatewayClient::DEFAULT_API_VERSION,
             'token' => $this->getBillingContextWrapper()->getAccessToken(),
             'isSandbox' => $this->getBillingContextWrapper()->isSandbox(),
         ]));
