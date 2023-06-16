@@ -1,7 +1,7 @@
 {
   "name": "prestashopcorp/module-lib-billing",
   "type": "library",
-  "description": "Utility package to retrieve SasS App module context and more",
+  "description": "Utility package to retrieve Built for PS context and more",
   "license": "MIT",
   "autoload": {
     "psr-4": {

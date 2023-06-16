@@ -76,6 +76,9 @@ class BillingServiceSubscriptionClient extends GenericClient
     }
 
     /**
+     * @deprecated since 3.0 and will be removed in next major version.
+     * @see getBillingApiGatewayClient()->retrieveProductComponents();
+     *
      * Retrieve plans associated with the module
      *
      * @param string $lang the lang of the user

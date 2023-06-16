@@ -28,6 +28,7 @@ class BillingApiGatewayClient extends GenericClient
 {
     const DEFAULT_API_VERSION = 'v1';
 
+    // https://prestashop-billing.stoplight.io/docs/api-gateway/14a1a9da838ee-retrieve-the-components-of-a-product
     protected $possibleQueryParameters = [
         'lang_iso_code',
         'filter_status',
@@ -46,12 +47,10 @@ class BillingApiGatewayClient extends GenericClient
         parent::__construct($optionsParameters);
     }
 
-    public function retrieveProductComponents($lang, $componentType = 'plan', $status = 'active')
+    public function retrieveProductComponents()
     {
         $params = [
-            'lang_iso_code' => $lang,
-            'filter_status' => $status,
-            'filter_component_type' => $componentType,
+            'filter_status' => 'active',
         ];
 
         $this->setQueryParams($params)

@@ -1,6 +1,6 @@
 # PrestaShop Billing Lib
 
-Utility package to retrieve SasS App module context and more
+Utility package to retrieve Built for PS context and more
 
 [![Latest Stable Version](https://img.shields.io/packagist/v/prestashopcorp/module-lib-billing.svg?style=flat-square)](https://packagist.org/packages/prestashopcorp/module-lib-billing) [![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.2.5-8892BF.svg?style=flat-square)](https://php.net/) [![Quality Control PHP](https://github.com/PrestaShopCorp/module-lib-billing/actions/workflows/billing-qc-php.yml/badge.svg)](https://github.com/PrestaShopCorp/module-lib-billing/actions/workflows/billing-qc-php.yml)
 
