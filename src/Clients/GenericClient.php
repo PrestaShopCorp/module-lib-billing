@@ -24,6 +24,7 @@ namespace PrestaShopCorp\Billing\Clients;
 use GuzzleHttp\Psr7\Request;
 use Prestashop\ModuleLibGuzzleAdapter\ClientFactory;
 use PrestaShopCorp\Billing\Clients\Handler\HttpResponseHandler;
+use PrestaShopCorp\Billing\Exception\QueryParamsException;
 use PrestaShopCorp\Billing\Exception\MissingMandatoryParametersException;
 
 /**
@@ -248,6 +249,11 @@ abstract class GenericClient
      */
     protected function setQueryParams(array $params)
     {
+        $notAllowedParameters = array_diff_key($params, array_flip($this->possibleQueryParameters));
+        if (!empty($notAllowedParameters)) {
+            throw new QueryParamsException($notAllowedParameters, $this->possibleQueryParameters);
+        }
+
         $filteredParams = array_intersect_key($params, array_flip($this->possibleQueryParameters));
         $this->queryParameters = '?' . http_build_query(array_merge($this->queryParameters, $filteredParams));
 
