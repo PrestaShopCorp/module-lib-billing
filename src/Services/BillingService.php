@@ -92,7 +92,7 @@ class BillingService
 
         $this->setBillingServiceSubscriptionClient(new BillingServiceSubscriptionClient([
             'client' => null,
-            'moduleName' => $this->getModule()->name,
+            'productId' => $this->getModule()->name,
             'apiUrl' => $this->getUrlBuilder()->buildAPIUrl(),
             'apiVersion' => $apiVersion ? $apiVersion : BillingServiceSubscriptionClient::DEFAULT_API_VERSION,
             'token' => $this->getBillingContextWrapper()->getAccessToken(),
@@ -101,7 +101,7 @@ class BillingService
 
         $this->setBillingApiGatewayClient(new BillingApiGatewayClient([
             'client' => null,
-            'moduleName' => $this->getModule()->name,
+            'productId' => $this->getModule()->name,
             'apiUrl' => $this->getUrlBuilder()->buildAPIGatewayUrl(),
             'apiVersion' => $apiVersion ? $apiVersion : BillingApiGatewayClient::DEFAULT_API_VERSION,
             'token' => $this->getBillingContextWrapper()->getAccessToken(),

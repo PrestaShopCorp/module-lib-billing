@@ -70,7 +70,7 @@ class BillingServiceSubscriptionClient extends GenericClient
      */
     public function retrieveSubscriptionByCustomerId($customerId)
     {
-        $this->setRoute('/customers/' . $customerId . '/subscriptions/' . $this->getModuleName());
+        $this->setRoute('/customers/' . $customerId . '/subscriptions/' . $this->getproductId());
 
         return $this->get();
     }
@@ -100,7 +100,7 @@ class BillingServiceSubscriptionClient extends GenericClient
             $params['offset'] = $offset;
         }
         $this->setQueryParams($params)
-            ->setRoute('/products/' . $this->getModuleName() . '/plans');
+            ->setRoute('/products/' . $this->getproductId() . '/plans');
 
         return $this->get();
     }

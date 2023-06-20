@@ -79,7 +79,7 @@ abstract class GenericClient
      *
      * @var string
      */
-    protected $moduleName;
+    protected $productId;
 
     /**
      * @var array<string, string>
@@ -92,7 +92,7 @@ abstract class GenericClient
     protected $possibleQueryParameters = [];
 
     protected $mandatoryOptionsParameters = [
-        'moduleName',
+        'productId',
         'client',
         'apiUrl',
         'token',
@@ -101,7 +101,7 @@ abstract class GenericClient
     ];
 
     protected $possibleOptionsParameters = [
-        'moduleName',
+        'productId',
         'client',
         'apiUrl',
         'token',
@@ -139,7 +139,7 @@ abstract class GenericClient
                     'headers' => [
                         'Accept' => 'application/json',
                         'Authorization' => 'Bearer ' . (string) $token,
-                        'User-Agent' => 'module-lib-billing v3 (' . $moduleName . ')',
+                        'User-Agent' => 'module-lib-billing v3 (' . $productId . ')',
                     ],
                 ],
             ];
@@ -151,7 +151,7 @@ abstract class GenericClient
         }
 
         $this->setClient($client)
-            ->setModuleName($moduleName)
+            ->setproductId($productId)
             ->setApiVersion($apiVersion);
     }
 
@@ -255,15 +255,15 @@ abstract class GenericClient
     }
 
     /**
-     * Setter for moduleName
+     * Setter for productId
      *
-     * @param string $moduleName
+     * @param string $productId
      *
      * @return void
      */
-    protected function setModuleName($moduleName)
+    protected function setproductId($productId)
     {
-        $this->moduleName = $moduleName;
+        $this->productId = $productId;
 
         return $this;
     }
@@ -358,12 +358,12 @@ abstract class GenericClient
     }
 
     /**
-     * Getter for moduleName
+     * Getter for productId
      *
      * @return string
      */
-    protected function getModuleName()
+    protected function getproductId()
     {
-        return $this->moduleName;
+        return $this->productId;
     }
 }

@@ -54,7 +54,7 @@ class BillingApiGatewayClient extends GenericClient
         ];
 
         $this->setQueryParams($params)
-            ->setRoute('/products/' . $this->getModuleName() . '/components');
+            ->setRoute('/products/' . $this->getproductId() . '/components');
 
         return $this->get();
     }
