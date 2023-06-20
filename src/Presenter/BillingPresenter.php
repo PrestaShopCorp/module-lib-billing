@@ -128,9 +128,6 @@ class BillingPresenter
      */
     private function validateContextArgs($params)
     {
-        if (empty($params['emailSupport'])) {
-            throw new BillingContextException('"emailSupport" must be provided (value=' . $params['emailSupport'] . ')');
-        }
         if (!\Validate::isEmail($params['emailSupport'])) {
             throw new BillingContextException('"emailSupport" must be a valid email (value=' . $params['emailSupport'] . ')');
         }

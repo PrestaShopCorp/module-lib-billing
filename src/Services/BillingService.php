@@ -132,7 +132,8 @@ class BillingService
     }
 
     /**
-     * @deprecated Please use getProductComponents() instead.
+     * @deprecated since 3.0 and will be removed in next major version.
+     * @see getProductComponents()
      *
      * Retrieve the plans associated to this module
      *
@@ -140,6 +141,21 @@ class BillingService
      */
     public function getModulePlans()
     {
+        @trigger_error(
+            sprintf(
+                '%s is deprecated since version 3.0. Use %s instead.',
+                __METHOD__,
+                BillingService::class . '->getProductComponents()'
+            ),
+            E_USER_DEPRECATED
+        );
+
+        \Tools::displayError(sprintf(
+            '%s is deprecated since version 3.0. Use %s instead.',
+            __METHOD__,
+            BillingService::class . '->getProductComponents()'
+        ));
+
         return $this->getBillingServiceSubscriptionClient()->retrievePlans($this->getBillingContextWrapper()->getLanguageIsoCode());
     }
 
@@ -148,12 +164,9 @@ class BillingService
      *
      * @return array
      */
-    public function getProductComponents($componentType = 'plan')
+    public function getProductComponents()
     {
-        return $this->getBillingApiGatewayClient()->retrieveProductComponents(
-            $this->getBillingContextWrapper()->getLanguageIsoCode(),
-            $componentType
-        );
+        return $this->getBillingApiGatewayClient()->retrieveProductComponents();
     }
 
     /**
