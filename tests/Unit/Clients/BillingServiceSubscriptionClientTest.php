@@ -264,7 +264,7 @@ class BillingServiceSubscriptionClientTest extends TestCase
 
         return new BillingServiceSubscriptionClient([
             'client' => $client,
-            'moduleName' => 'rbm_example',
+            'productId' => 'rbm_example',
             'apiVersion' => BillingServiceSubscriptionClient::DEFAULT_API_VERSION,
             'apiUrl' => 'http://localhost/',
             'token' => 'token',

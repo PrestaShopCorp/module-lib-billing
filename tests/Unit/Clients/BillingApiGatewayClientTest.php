@@ -124,7 +124,7 @@ class BillingApiGatewayClientTest extends TestCase
 
         return new BillingApiGatewayClient([
             'client' => $client,
-            'moduleName' => 'rbm_example',
+            'productId' => 'rbm_example',
             'apiVersion' => BillingApiGatewayClient::DEFAULT_API_VERSION,
             'apiUrl' => 'http://localhost/',
             'token' => 'token',
