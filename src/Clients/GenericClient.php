@@ -24,8 +24,8 @@ namespace PrestaShopCorp\Billing\Clients;
 use GuzzleHttp\Psr7\Request;
 use Prestashop\ModuleLibGuzzleAdapter\ClientFactory;
 use PrestaShopCorp\Billing\Clients\Handler\HttpResponseHandler;
-use PrestaShopCorp\Billing\Exception\QueryParamsException;
 use PrestaShopCorp\Billing\Exception\MissingMandatoryParametersException;
+use PrestaShopCorp\Billing\Exception\QueryParamsException;
 
 /**
  * Construct the client used to make call to maasland.
