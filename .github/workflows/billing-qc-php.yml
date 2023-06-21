@@ -55,5 +55,8 @@ jobs:
       - name: Install dependencies
         run: composer install
 
-      - name: Run PHPUnit
-        run: vendor/bin/phpunit tests
+      - name: PHPUnit tests
+        run: |
+          wget -O phpunit https://phar.phpunit.de/phpunit-5.phar
+          chmod +x phpunit
+          ./phpunit tests
