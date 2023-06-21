@@ -75,23 +75,12 @@ class BillingApiGatewayClientTest extends TestCase
     public function testRetrieveProductComponentsPlan()
     {
         $billingClient = $this->getBillingApiGatewayClient($this->componentPlan);
-        $resultPlan = $billingClient->retrieveProductComponents('fr');
+        $resultPlan = $billingClient->retrieveProductComponents();
 
         // Test the format and the content
         $this->assertEquals($resultPlan['success'], true);
         $this->assertEquals($resultPlan['httpStatus'], 200);
         $this->assertEquals($resultPlan['body'], $this->componentPlan);
-    }
-
-    public function testRetrieveProductComponentsAddon()
-    {
-        $billingClient = $this->getBillingApiGatewayClient($this->componentAddon);
-        $resultAddon = $billingClient->retrieveProductComponents('fr', 'addon');
-
-        // Test the format and the content
-        $this->assertEquals($resultAddon['success'], true);
-        $this->assertEquals($resultAddon['httpStatus'], 200);
-        $this->assertEquals($resultAddon['body'], []);
     }
 
     /**
