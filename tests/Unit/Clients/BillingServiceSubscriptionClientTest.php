@@ -35,7 +35,7 @@ class BillingServiceSubscriptionClientTest extends TestCase
     protected $subscription;
     protected $plans;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

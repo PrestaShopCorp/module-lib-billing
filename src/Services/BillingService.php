@@ -268,7 +268,7 @@ class BillingService
      *
      * @return void
      */
-    private function setBillingContextWrapper($billingContextWrapper)
+    private function setBillingContextWrapper(BillingContextWrapper $billingContextWrapper)
     {
         $this->billingContextWrapper = $billingContextWrapper;
 

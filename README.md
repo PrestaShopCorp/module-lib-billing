@@ -95,7 +95,12 @@ Please follow theses steps to launch unit tests
 
 ```
 # Needs to have wget, for OS without wget pleae see the official website (or just visit this link)
-wget -O phpunit https://phar.phpunit.de/phpunit-5.phar
+PHP_VERSION=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;")
+if [[ ${PHP_VERSION} -gt "72" ]]; then
+  wget -O phpunit https://phar.phpunit.de/phpunit-9.phar
+else
+  wget -O phpunit https://phar.phpunit.de/phpunit-8.phar
+fi
 
 chmod +x phpunit
 

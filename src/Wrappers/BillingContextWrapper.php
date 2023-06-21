@@ -151,7 +151,7 @@ class BillingContextWrapper
      *
      * @return void
      */
-    private function setContext($context)
+    private function setContext(\Context $context)
     {
         $this->context = $context;
     }
@@ -173,7 +173,7 @@ class BillingContextWrapper
      *
      * @return void
      */
-    private function setSandbox($sandbox)
+    private function setSandbox(bool $sandbox)
     {
         $this->sandbox = $sandbox;
     }
@@ -181,7 +181,7 @@ class BillingContextWrapper
     /**
      * setBillingEnv
      *
-     * @param string $billingEnv
+     * @param string|null $billingEnv
      *
      * @return void
      */

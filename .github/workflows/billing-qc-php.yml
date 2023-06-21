@@ -11,9 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.0.0
-      - name: PHP syntax checker 5.6
-        uses: prestashop/github-action-php-lint/5.6@master
+        uses: actions/checkout@v3
       - name: PHP syntax checker 7.2
         uses: prestashop/github-action-php-lint/7.2@master
       - name: PHP syntax checker 7.3
@@ -32,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.0.0
+        uses: actions/checkout@v3
       - name: Run PHP-CS-Fixer
         uses: prestashopcorp/github-action-php-cs-fixer@master
 
@@ -49,19 +47,7 @@ jobs:
         with:
           php-version: ${{ matrix.version }}
       - name: Checkout
-        uses: actions/checkout@v2.0.0
-
-      - name: Cache vendor folder
-        uses: actions/cache@v1
-        with:
-          path: vendor
-          key: php-${{ hashFiles('composer.lock') }}
-
-      - name: Cache composer folder
-        uses: actions/cache@v1
-        with:
-          path: ~/.composer/cache
-          key: php-composer-cache
+        uses: actions/checkout@v3
 
       - name: Update dependencies
         run: composer update
@@ -69,8 +55,5 @@ jobs:
       - name: Install dependencies
         run: composer install
 
-      - name: PHPUnit tests
-        run: |
-          wget -O phpunit https://phar.phpunit.de/phpunit-5.phar
-          chmod +x phpunit
-          ./phpunit tests
+      - name: Run PHPUnit
+        run: vendor/bin/phpunit tests
