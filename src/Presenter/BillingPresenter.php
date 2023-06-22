@@ -73,7 +73,7 @@ class BillingPresenter
      *
      * @return array
      */
-    public function present(array $params)
+    public function present($params)
     {
         $this->validateContextArgs($params);
 
@@ -103,7 +103,6 @@ class BillingPresenter
                         'uuid' => $this->getBillingContextWrapper()->getShopUuid(),
                     ],
                     'user' => [
-                        'createdFromIp' => \Tools::getRemoteAddr(),
                         'email' => $this->getBillingContextWrapper()->getEmail(),
                     ],
 
@@ -126,11 +125,8 @@ class BillingPresenter
      *
      * @throws BillingContextException when some data are missing
      */
-    private function validateContextArgs(array $params)
+    private function validateContextArgs($params)
     {
-        if (empty($params['emailSupport'])) {
-            throw new BillingContextException('"emailSupport" must be provided (value=' . $params['emailSupport'] . ')');
-        }
         if (!\Validate::isEmail($params['emailSupport'])) {
             throw new BillingContextException('"emailSupport" must be a valid email (value=' . $params['emailSupport'] . ')');
         }
@@ -151,7 +147,7 @@ class BillingPresenter
     /**
      * @return string
      */
-    private function encodeImage(string $image_path)
+    private function encodeImage($image_path)
     {
         $mime_type = $this->getMimeTypeByExtension($image_path);
         if ($mime_type === null) {

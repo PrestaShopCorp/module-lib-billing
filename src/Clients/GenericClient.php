@@ -22,8 +22,10 @@
 namespace PrestaShopCorp\Billing\Clients;
 
 use GuzzleHttp\Psr7\Request;
+use Prestashop\ModuleLibGuzzleAdapter\ClientFactory;
 use PrestaShopCorp\Billing\Clients\Handler\HttpResponseHandler;
-use Psr\Http\Client\ClientInterface;
+use PrestaShopCorp\Billing\Exception\MissingMandatoryParametersException;
+use PrestaShopCorp\Billing\Exception\QueryParamsException;
 
 /**
  * Construct the client used to make call to maasland.
@@ -53,6 +55,13 @@ abstract class GenericClient
     protected $route;
 
     /**
+     * Api url.
+     *
+     * @var string
+     */
+    protected $apiUrl;
+
+    /**
      * Set how long guzzle will wait a response before end it up.
      *
      * @var int
@@ -67,10 +76,84 @@ abstract class GenericClient
     protected $apiVersion;
 
     /**
+     * Technical name of the module
+     *
+     * @var string
+     */
+    protected $productId;
+
+    /**
+     * @var array<string, string>
+     */
+    protected $queryParameters = [];
+
+    /**
+     * @var array<int, string>
+     */
+    protected $possibleQueryParameters = [];
+
+    protected $mandatoryOptionsParameters = [
+        'productId',
+        'client',
+        'apiUrl',
+        'token',
+        'isSandbox',
+        'apiVersion',
+    ];
+
+    protected $possibleOptionsParameters = [
+        'productId',
+        'client',
+        'apiUrl',
+        'token',
+        'isSandbox',
+        'apiVersion',
+        'timeout',
+        'catchExceptions',
+    ];
+
+    /**
      * GenericClient constructor.
      */
-    public function __construct()
+    public function __construct($optionsParameters = [])
     {
+        $checkededOptionsParams = array_diff_ukey(array_flip($this->mandatoryOptionsParameters), $optionsParameters, 'strcasecmp');
+        if (!empty($checkededOptionsParams)) {
+            throw new MissingMandatoryParametersException($checkededOptionsParams);
+        }
+
+        $filteredOptionsParams = array_intersect_key($optionsParameters, array_flip($this->possibleOptionsParameters));
+
+        extract($filteredOptionsParams, EXTR_PREFIX_SAME, 'generic');
+
+        // Client can be provided for tests or some specific use case
+        if (!isset($client) || null === $client) {
+            $this->setClientUrl($apiUrl);
+            $this->setTimeout(isset($timeout) ? $timeout : $this->getTimeout());
+            $this->setCatchExceptions(isset($catchExceptions) ? $catchExceptions : $this->getCatchExceptions());
+
+            $clientParams = [
+                'base_url' => $this->getClientUrl(),
+                'defaults' => [
+                    'timeout' => $this->getTimeout(),
+                    'exceptions' => $this->getCatchExceptions(),
+                    'headers' => [
+                        'Accept' => 'application/json',
+                        'Authorization' => 'Bearer ' . (string) $token,
+                        'User-Agent' => 'module-lib-billing v3 (' . $productId . ')',
+                    ],
+                ],
+            ];
+
+            if (true === $isSandbox) {
+                $clientParams['defaults']['headers']['Sandbox'] = 'true';
+            }
+            $client = (new ClientFactory())->getClient($clientParams);
+        }
+
+        $this->setClient($client)
+            ->setproductId($productId)
+            ->setApiVersion($apiVersion);
     }
 
     /**
@@ -80,10 +163,9 @@ abstract class GenericClient
      *
      * @return array return response or false if no response
      */
-    protected function get(array $options = [])
+    protected function get($options = [])
     {
-        $response = $this->getClient()->sendRequest(new Request('GET', $this->concatApiVersionAndRoute(), $options));
-
+        $response = $this->getClient()->sendRequest(new Request('GET', $this->getRoute(), $options));
         $responseHandler = new HttpResponseHandler();
 
         return $responseHandler->handleResponse($response);
@@ -94,9 +176,11 @@ abstract class GenericClient
      *
      * @return void
      */
-    protected function setClient(ClientInterface $client)
+    protected function setClient($client)
     {
         $this->client = $client;
+
+        return $this;
     }
 
     /**
@@ -106,9 +190,11 @@ abstract class GenericClient
      *
      * @return void
      */
-    protected function setCatchExceptions(bool $bool)
+    protected function setCatchExceptions($bool)
     {
-        $this->catchExceptions = $bool;
+        $this->catchExceptions = (bool) $bool;
+
+        return $this;
     }
 
     /**
@@ -118,9 +204,14 @@ abstract class GenericClient
      *
      * @return void
      */
-    protected function setRoute(string $route)
+    protected function setRoute($route)
     {
         $this->route = $route;
+        if ($this->getQueryParameters()) {
+            $this->route .= $this->getQueryParameters();
+        }
+
+        return $this;
     }
 
     /**
@@ -132,7 +223,9 @@ abstract class GenericClient
      */
     protected function setTimeout(int $timeout)
     {
-        $this->timeout = $timeout;
+        $this->timeout = (int) $timeout;
+
+        return $this;
     }
 
     /**
@@ -145,6 +238,47 @@ abstract class GenericClient
     protected function setApiVersion($apiVersion)
     {
         $this->apiVersion = $apiVersion;
+
+        return $this;
+    }
+
+    /**
+     * @param array $params
+     *
+     * @return $this
+     */
+    protected function setQueryParams(array $params)
+    {
+        $notAllowedParameters = array_diff_key($params, array_flip($this->possibleQueryParameters));
+        if (!empty($notAllowedParameters)) {
+            throw new QueryParamsException($notAllowedParameters, $this->possibleQueryParameters);
+        }
+
+        $filteredParams = array_intersect_key($params, array_flip($this->possibleQueryParameters));
+        $this->queryParameters = '?' . http_build_query(array_merge($this->queryParameters, $filteredParams));
+
+        return $this;
+    }
+
+    /**
+     * Setter for productId
+     *
+     * @param string $productId
+     *
+     * @return void
+     */
+    protected function setproductId($productId)
+    {
+        $this->productId = $productId;
+
+        return $this;
+    }
+
+    protected function setClientUrl($apiUrl)
+    {
+        $this->apiUrl = $apiUrl;
+
+        return $this;
     }
 
     /**
@@ -152,7 +286,7 @@ abstract class GenericClient
      *
      * @return bool
      */
-    protected function isCatchExceptions()
+    protected function getCatchExceptions()
     {
         return $this->catchExceptions;
     }
@@ -162,7 +296,7 @@ abstract class GenericClient
      *
      * @return ClientInterface
      */
-    public function getClient()
+    protected function getClient()
     {
         return $this->client;
     }
@@ -174,7 +308,31 @@ abstract class GenericClient
      */
     protected function getRoute()
     {
+        if ($this->getApiVersion()) {
+            return $this->getApiVersion() . $this->route;
+        }
+
         return $this->route;
+    }
+
+    /**
+     * Getter for client url.
+     *
+     * @return string
+     */
+    protected function getClientUrl()
+    {
+        return $this->apiUrl;
+    }
+
+    /**
+     * Getter for full url (client url & route).
+     *
+     * @return string
+     */
+    protected function getUrl()
+    {
+        return $this->getClientUrl() . $this->getRoute();
     }
 
     /**
@@ -198,16 +356,20 @@ abstract class GenericClient
     }
 
     /**
-     * Add api version at the beginning of the route if set
+     * @return array<string, string>
+     */
+    protected function getQueryParameters()
+    {
+        return $this->queryParameters;
+    }
+
+    /**
+     * Getter for productId
      *
      * @return string
      */
-    private function concatApiVersionAndRoute()
+    protected function getproductId()
     {
-        if ($this->getApiVersion()) {
-            return $this->getApiVersion() . $this->getRoute();
-        }
-
-        return $this->getRoute();
+        return $this->productId;
     }
 }

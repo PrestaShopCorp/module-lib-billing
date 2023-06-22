@@ -51,8 +51,8 @@ class BillingContextWrapper
     private $billingEnv;
 
     public function __construct(
-        PsAccounts $accountFacade = null,
-        \Context $context = null,
+        $accountFacade = null,
+        $context = null,
         $sandbox = false,
         $billingEnv = null
     ) {
