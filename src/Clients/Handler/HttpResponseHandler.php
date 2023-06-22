@@ -51,7 +51,7 @@ class HttpResponseHandler
      *
      * @return bool
      */
-    private function responseIsSuccessful(int $httpStatusCode)
+    private function responseIsSuccessful($httpStatusCode)
     {
         return '2' === substr((string) $httpStatusCode, 0, 1);
     }

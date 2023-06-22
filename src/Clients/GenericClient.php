@@ -190,7 +190,7 @@ abstract class GenericClient
      *
      * @return void
      */
-    protected function setCatchExceptions(bool $bool)
+    protected function setCatchExceptions($bool)
     {
         $this->catchExceptions = (bool) $bool;
 
@@ -204,7 +204,7 @@ abstract class GenericClient
      *
      * @return void
      */
-    protected function setRoute(string $route)
+    protected function setRoute($route)
     {
         $this->route = $route;
         if ($this->getQueryParameters()) {
