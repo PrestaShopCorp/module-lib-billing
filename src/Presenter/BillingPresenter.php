@@ -103,7 +103,6 @@ class BillingPresenter
                         'uuid' => $this->getBillingContextWrapper()->getShopUuid(),
                     ],
                     'user' => [
-                        'createdFromIp' => \Tools::getRemoteAddr(),
                         'email' => $this->getBillingContextWrapper()->getEmail(),
                     ],
 
