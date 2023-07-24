@@ -115,6 +115,16 @@ class BillingContextWrapper
     }
 
     /**
+     * Get the uuid of the organization.
+     *
+     * @return string|null
+     */
+    public function getOrganizationUuid()
+    {
+        return $this->getPsAccountService()->getUserUuid();
+    }
+
+    /**
      * getSandbox
      *
      * @return bool

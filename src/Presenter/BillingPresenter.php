@@ -88,29 +88,26 @@ class BillingPresenter
                     'isSandbox' => $this->getBillingContextWrapper()->isSandbox()
                         ? $this->getBillingContextWrapper()->isSandbox()
                         : false,
-
-                    'versionPs' => _PS_VERSION_,
-                    'versionModule' => $this->getModule()->version,
-                    'moduleName' => $this->getModule()->name,
-                    'displayName' => $this->getModule()->displayName,
-
+                    'emailSupport' => !empty($params['emailSupport']) ? $params['emailSupport'] : '',
                     'i18n' => [
                         'isoCode' => $this->getBillingContextWrapper()->getLanguageIsoCode(),
                     ],
-
                     'refreshToken' => $this->getBillingContextWrapper()->getRefreshToken(),
                     'shop' => [
                         'uuid' => $this->getBillingContextWrapper()->getShopUuid(),
                     ],
-                    'user' => [
+                    'organization' => [
+                        'uuid' => $this->getBillingContextWrapper()->getOrganizationUuid(),
                         'email' => $this->getBillingContextWrapper()->getEmail(),
+                        'logoSrc' => !empty($params['logo']) ? $this->encodeImage($params['logo']) : '',
                     ],
-
-                    'moduleLogo' => $this->encodeImage($this->getModuleLogo()),
-                    'partnerLogo' => !empty($params['logo']) ? $this->encodeImage($params['logo']) : '',
-                    'moduleTosUrl' => !empty($params['tosLink']) ? $params['tosLink'] : '',
-                    'modulePrivacyUrl' => !empty($params['privacyLink']) ? $params['privacyLink'] : '',
-                    'emailSupport' => !empty($params['emailSupport']) ? $params['emailSupport'] : '',
+                    'product' => [
+                        'id' => $this->getModule()->name,
+                        'displayName' => $this->getModule()->displayName,
+                        'logoSrc' => $this->encodeImage($this->getModuleLogo()),
+                        'privacyUrl' => !empty($params['privacyLink']) ? $params['privacyLink'] : '',
+                        'tosUrl' => !empty($params['tosLink']) ? $params['tosLink'] : '',
+                    ],
                 ],
             ],
         ];
