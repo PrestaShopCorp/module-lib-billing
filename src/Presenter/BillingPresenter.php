@@ -105,8 +105,8 @@ class BillingPresenter
                         'id' => $this->getModule()->name,
                         'displayName' => $this->getModule()->displayName,
                         'logoSrc' => $this->encodeImage($this->getModuleLogo()),
-                        'privacyUrl' => !empty($params['product']['privacyUrl']) ? $params['product']['privacyUrl'] : '',
-                        'tosUrl' => !empty($params['product']['tosUrl']) ? $params['product']['tosUrl'] : '',
+                        'privacyUrl' => !empty($params['privacyUrl']) ? $params['privacyUrl'] : '',
+                        'tosUrl' => !empty($params['tosUrl']) ? $params['tosUrl'] : '',
                     ],
                 ],
             ],
@@ -127,17 +127,17 @@ class BillingPresenter
         if (!\Validate::isEmail($params['emailSupport'])) {
             throw new BillingContextException('"emailSupport" must be a valid email (value=' . $params['emailSupport'] . ')');
         }
-        if (empty($params['product']['tosUrl'])) {
-            throw new BillingContextException('"tosUrl" must be provided (value=' . $params['product']['tosUrl'] . ')');
+        if (empty($params['tosUrl'])) {
+            throw new BillingContextException('"tosUrl" must be provided (value=' . $params['tosUrl'] . ')');
         }
-        if (!\Validate::isAbsoluteUrl($params['product']['tosUrl'])) {
-            throw new BillingContextException('"tosUrl" must be a valid url (value=' . $params['product']['tosUrl'] . ')');
+        if (!\Validate::isAbsoluteUrl($params['tosUrl'])) {
+            throw new BillingContextException('"tosUrl" must be a valid url (value=' . $params['tosUrl'] . ')');
         }
-        if (empty($params['product']['privacyUrl'])) {
-            throw new BillingContextException('"privacyUrl" must be provided (value=' . $params['product']['privacyUrl'] . ')');
+        if (empty($params['privacyUrl'])) {
+            throw new BillingContextException('"privacyUrl" must be provided (value=' . $params['privacyUrl'] . ')');
         }
-        if (!\Validate::isAbsoluteUrl($params['product']['privacyUrl'])) {
-            throw new BillingContextException('"privacyUrl" must be a valid url (value=' . $params['product']['privacyUrl'] . ')');
+        if (!\Validate::isAbsoluteUrl($params['privacyUrl'])) {
+            throw new BillingContextException('"privacyUrl" must be a valid url (value=' . $params['privacyUrl'] . ')');
         }
     }
 
