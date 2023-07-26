@@ -29,6 +29,8 @@ use PrestaShopCorp\Billing\Wrappers\BillingContextWrapper;
 
 class BillingPresenter
 {
+    const CONTEXT_VERSION = 2;
+
     /**
      * @var EnvBuilder
      */
@@ -83,6 +85,7 @@ class BillingPresenter
         return [
             'psBillingContext' => [
                 'context' => [
+                    'version' => BillingPresenter::CONTEXT_VERSION,
                     'billingEnv' => $billingEnv,
                     'billingUIUrl' => $this->getUrlBuilder()->buildUIUrl($billingEnv),
                     'isSandbox' => $this->getBillingContextWrapper()->isSandbox()
