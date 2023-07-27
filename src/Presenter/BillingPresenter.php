@@ -85,19 +85,18 @@ class BillingPresenter
         return [
             'psBillingContext' => [
                 'context' => [
-                    'version' => BillingPresenter::CONTEXT_VERSION,
+                    'contextVersion' => BillingPresenter::CONTEXT_VERSION,
                     'billingEnv' => $billingEnv,
-                    'billingUIUrl' => $this->getUrlBuilder()->buildUIUrl($billingEnv),
                     'isSandbox' => $this->getBillingContextWrapper()->isSandbox()
                         ? $this->getBillingContextWrapper()->isSandbox()
                         : false,
-                    'emailSupport' => !empty($params['emailSupport']) ? $params['emailSupport'] : '',
                     'i18n' => [
                         'isoCode' => $this->getBillingContextWrapper()->getLanguageIsoCode(),
                     ],
                     'refreshToken' => $this->getBillingContextWrapper()->getRefreshToken(),
                     'shop' => [
                         'uuid' => $this->getBillingContextWrapper()->getShopUuid(),
+                        'domain' => $this->getBillingContextWrapper()->getShopDomain(),
                     ],
                     'organization' => [
                         'uuid' => $this->getBillingContextWrapper()->getOrganizationUuid(),

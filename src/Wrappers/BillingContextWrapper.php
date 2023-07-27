@@ -125,6 +125,16 @@ class BillingContextWrapper
     }
 
     /**
+     * Get the domain of the shop.
+     *
+     * @return string|null
+     */
+    public function getShopDomain()
+    {
+        return \Tools::getShopDomain();
+    }
+
+    /**
      * getSandbox
      *
      * @return bool
