@@ -126,9 +126,6 @@ class BillingPresenter
      */
     private function validateContextArgs($params)
     {
-        if (!\Validate::isEmail($params['emailSupport'])) {
-            throw new BillingContextException('"emailSupport" must be a valid email (value=' . $params['emailSupport'] . ')');
-        }
         if (empty($params['tosUrl'])) {
             throw new BillingContextException('"tosUrl" must be provided (value=' . $params['tosUrl'] . ')');
         }
