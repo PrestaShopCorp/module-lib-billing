@@ -115,6 +115,26 @@ class BillingContextWrapper
     }
 
     /**
+     * Get the uuid of the organization.
+     *
+     * @return string|null
+     */
+    public function getOrganizationUuid()
+    {
+        return $this->getPsAccountService()->getUserUuid();
+    }
+
+    /**
+     * Get the domain of the shop.
+     *
+     * @return string|null
+     */
+    public function getShopDomain()
+    {
+        return \Tools::getShopDomain();
+    }
+
+    /**
      * getSandbox
      *
      * @return bool

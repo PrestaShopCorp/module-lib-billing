@@ -29,6 +29,8 @@ use PrestaShopCorp\Billing\Wrappers\BillingContextWrapper;
 
 class BillingPresenter
 {
+    const CONTEXT_VERSION = 2;
+
     /**
      * @var EnvBuilder
      */
@@ -83,34 +85,31 @@ class BillingPresenter
         return [
             'psBillingContext' => [
                 'context' => [
+                    'contextVersion' => BillingPresenter::CONTEXT_VERSION,
                     'billingEnv' => $billingEnv,
-                    'billingUIUrl' => $this->getUrlBuilder()->buildUIUrl($billingEnv),
                     'isSandbox' => $this->getBillingContextWrapper()->isSandbox()
                         ? $this->getBillingContextWrapper()->isSandbox()
                         : false,
-
-                    'versionPs' => _PS_VERSION_,
-                    'versionModule' => $this->getModule()->version,
-                    'moduleName' => $this->getModule()->name,
-                    'displayName' => $this->getModule()->displayName,
-
                     'i18n' => [
                         'isoCode' => $this->getBillingContextWrapper()->getLanguageIsoCode(),
                     ],
-
                     'refreshToken' => $this->getBillingContextWrapper()->getRefreshToken(),
                     'shop' => [
                         'uuid' => $this->getBillingContextWrapper()->getShopUuid(),
+                        'domain' => $this->getBillingContextWrapper()->getShopDomain(),
                     ],
-                    'user' => [
+                    'organization' => [
+                        'uuid' => $this->getBillingContextWrapper()->getOrganizationUuid(),
                         'email' => $this->getBillingContextWrapper()->getEmail(),
+                        'logoSrc' => !empty($params['logo']) ? $this->encodeImage($params['logo']) : '',
                     ],
-
-                    'moduleLogo' => $this->encodeImage($this->getModuleLogo()),
-                    'partnerLogo' => !empty($params['logo']) ? $this->encodeImage($params['logo']) : '',
-                    'moduleTosUrl' => !empty($params['tosLink']) ? $params['tosLink'] : '',
-                    'modulePrivacyUrl' => !empty($params['privacyLink']) ? $params['privacyLink'] : '',
-                    'emailSupport' => !empty($params['emailSupport']) ? $params['emailSupport'] : '',
+                    'product' => [
+                        'id' => $this->getModule()->name,
+                        'displayName' => $this->getModule()->displayName,
+                        'logoSrc' => $this->encodeImage($this->getModuleLogo()),
+                        'privacyUrl' => !empty($params['privacyUrl']) ? $params['privacyUrl'] : '',
+                        'tosUrl' => !empty($params['tosUrl']) ? $params['tosUrl'] : '',
+                    ],
                 ],
             ],
         ];
@@ -127,20 +126,17 @@ class BillingPresenter
      */
     private function validateContextArgs($params)
     {
-        if (!\Validate::isEmail($params['emailSupport'])) {
-            throw new BillingContextException('"emailSupport" must be a valid email (value=' . $params['emailSupport'] . ')');
+        if (empty($params['tosUrl'])) {
+            throw new BillingContextException('"tosUrl" must be provided (value=' . $params['tosUrl'] . ')');
         }
-        if (empty($params['tosLink'])) {
-            throw new BillingContextException('"tosLink" must be provided (value=' . $params['tosLink'] . ')');
+        if (!\Validate::isAbsoluteUrl($params['tosUrl'])) {
+            throw new BillingContextException('"tosUrl" must be a valid url (value=' . $params['tosUrl'] . ')');
         }
-        if (!\Validate::isAbsoluteUrl($params['tosLink'])) {
-            throw new BillingContextException('"tosLink" must be a valid url (value=' . $params['tosLink'] . ')');
+        if (empty($params['privacyUrl'])) {
+            throw new BillingContextException('"privacyUrl" must be provided (value=' . $params['privacyUrl'] . ')');
         }
-        if (empty($params['privacyLink'])) {
-            throw new BillingContextException('"privacyLink" must be provided (value=' . $params['privacyLink'] . ')');
-        }
-        if (!\Validate::isAbsoluteUrl($params['privacyLink'])) {
-            throw new BillingContextException('"privacyLink" must be a valid url (value=' . $params['privacyLink'] . ')');
+        if (!\Validate::isAbsoluteUrl($params['privacyUrl'])) {
+            throw new BillingContextException('"privacyUrl" must be a valid url (value=' . $params['privacyUrl'] . ')');
         }
     }
 
