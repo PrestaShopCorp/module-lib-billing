@@ -113,3 +113,19 @@ chmod +x phpunit
 ```
 ./phpunit tests
 ```
+
+### Introduce a breaking change in module-lib-billing
+
+PrestaShop module system is not able to handle multiple version of the same library.
+
+**Here is an example:**
+- Module A requires the v1 of a libA 
+- Module B requires the v2 of this same libA
+
+If someone install module A then module B, only the v1 of libA will be loaded for both Module A and Module B.
+
+#### Workaround
+
+When introducing a breaking change to a class or method signature, you should instead create a new class rather to changing the existing one.
+
+By creating a new class it will force the autoloader to use the last version of the lib.
