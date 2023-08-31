@@ -81,6 +81,8 @@ class BillingPresenter
 
         $getEnv = $this->getBillingContextWrapper()->getBillingEnv() ?: '';
         $billingEnv = $this->getEnvBuilder()->buildBillingEnv($getEnv);
+        $tosUrl = !empty($params['tosUrl']) ? $params['tosUrl'] : $params['tosLink'];
+        $privacyUrl = !empty($params['privacyUrl']) ? $params['privacyUrl'] : $params['privacyLink'];
 
         return [
             'psBillingContext' => [
@@ -107,8 +109,8 @@ class BillingPresenter
                         'id' => $this->getModule()->name,
                         'displayName' => $this->getModule()->displayName,
                         'logoSrc' => $this->encodeImage($this->getModuleLogo()),
-                        'privacyUrl' => !empty($params['privacyUrl']) ? $params['privacyUrl'] : $params['privacyLink'],
-                        'tosUrl' => !empty($params['tosUrl']) ? $params['tosUrl'] : $params['tosLink'],
+                        'privacyUrl' => !empty($privacyUrl) ? $privacyUrl : '',
+                        'tosUrl' => !empty($tosUrl) ? $tosUrl : '',
                     ],
                 ],
             ],
