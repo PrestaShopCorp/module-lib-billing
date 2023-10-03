@@ -95,7 +95,7 @@ class BillingPresenter
                     'i18n' => [
                         'isoCode' => $this->getBillingContextWrapper()->getLanguageIsoCode(),
                     ],
-                    'refreshToken' => $this->getBillingContextWrapper()->getRefreshToken(),
+                    'accessToken' => $this->getBillingContextWrapper()->getAccessToken(),
                     'shop' => [
                         'uuid' => $this->getBillingContextWrapper()->getShopUuid(),
                         'domain' => $this->getBillingContextWrapper()->getShopDomain(),
