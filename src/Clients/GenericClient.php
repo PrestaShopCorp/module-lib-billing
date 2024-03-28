@@ -249,6 +249,7 @@ abstract class GenericClient
      */
     protected function setQueryParams(array $params)
     {
+        $this->queryParameters = [];
         $notAllowedParameters = array_diff_key($params, array_flip($this->possibleQueryParameters));
         if (!empty($notAllowedParameters)) {
             throw new QueryParamsException($notAllowedParameters, $this->possibleQueryParameters);
