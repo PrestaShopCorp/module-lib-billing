@@ -208,7 +208,7 @@ abstract class GenericClient
     {
         $this->route = $route;
         if ($this->getQueryParameters()) {
-            $this->route .= $this->getQueryParameters();
+            $this->route .= '?' . http_build_query($this->getQueryParameters());
         }
 
         return $this;
@@ -249,14 +249,13 @@ abstract class GenericClient
      */
     protected function setQueryParams(array $params)
     {
-        $this->queryParameters = [];
         $notAllowedParameters = array_diff_key($params, array_flip($this->possibleQueryParameters));
         if (!empty($notAllowedParameters)) {
             throw new QueryParamsException($notAllowedParameters, $this->possibleQueryParameters);
         }
 
         $filteredParams = array_intersect_key($params, array_flip($this->possibleQueryParameters));
-        $this->queryParameters = '?' . http_build_query(array_merge($this->queryParameters, $filteredParams));
+        $this->queryParameters = array_merge($this->queryParameters, $filteredParams);
 
         return $this;
     }
