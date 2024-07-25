@@ -92,20 +92,20 @@ class UrlBuilderTest extends TestCase
         $this->assertEquals($builder->buildAPIGatewayUrl(), 'https://www.w3schools.com');
 
         $builder = new UrlBuilder('prestabulle1');
-        $this->assertEquals($builder->buildAPIGatewayUrl(), 'https://billing-api-gateway-prestabulle1.prestashop.com');
+        $this->assertEquals($builder->buildAPIGatewayUrl(), 'https://api-prestabulle1.billing.integration.prestashop.com');
         $builder = new UrlBuilder('prestabulle2');
-        $this->assertEquals($builder->buildAPIGatewayUrl(), 'https://billing-api-gateway-prestabulle2.prestashop.com');
+        $this->assertEquals($builder->buildAPIGatewayUrl(), 'https://api-prestabulle2.billing.integration.prestashop.com');
         $builder = new UrlBuilder('prestabulle3');
-        $this->assertEquals($builder->buildAPIGatewayUrl(), 'https://billing-api-gateway-prestabulle3.prestashop.com');
+        $this->assertEquals($builder->buildAPIGatewayUrl(), 'https://api-prestabulle3.billing.integration.prestashop.com');
         $builder = new UrlBuilder('prestabulle4');
-        $this->assertEquals($builder->buildAPIGatewayUrl(), 'https://billing-api-gateway-prestabulle4.prestashop.com');
+        $this->assertEquals($builder->buildAPIGatewayUrl(), 'https://api-prestabulle4.billing.integration.prestashop.com');
         $builder = new UrlBuilder('prestabulle5');
-        $this->assertEquals($builder->buildAPIGatewayUrl(), 'https://billing-api-gateway-prestabulle5.prestashop.com');
+        $this->assertEquals($builder->buildAPIGatewayUrl(), 'https://api-prestabulle5.billing.integration.prestashop.com');
         $builder = new UrlBuilder('prestabulle6');
-        $this->assertEquals($builder->buildAPIGatewayUrl(), 'https://billing-api-gateway-prestabulle6.prestashop.com');
+        $this->assertEquals($builder->buildAPIGatewayUrl(), 'https://api-prestabulle6.billing.integration.prestashop.com');
 
         $builder = new UrlBuilder('preprod');
-        $this->assertEquals($builder->buildAPIGatewayUrl(), 'https://billing-api-gateway-preprod.prestashop.com');
+        $this->assertEquals($builder->buildAPIGatewayUrl(), 'https://api.billing-preproduction.prestashop.com');
         $builder = new UrlBuilder();
         $this->assertEquals($builder->buildAPIGatewayUrl(), 'https://api.billing.prestashop.com');
     }
