@@ -107,8 +107,10 @@ class UrlBuilder
             case 'prestabulle4':
             case 'prestabulle5':
             case 'prestabulle6':
+                return 'https://api-' . $this->getEnvName() . '.billing.integration.prestashop.com';
+                break;
             case 'preprod':
-                return 'https://billing-api-gateway-' . $this->getEnvName() . '.prestashop.com';
+                return 'https://api.billing-preproduction.prestashop.com';
                 break;
             default:
                 return 'https://api.billing.prestashop.com';
