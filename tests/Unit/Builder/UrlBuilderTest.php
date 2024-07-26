@@ -105,7 +105,7 @@ class UrlBuilderTest extends TestCase
         $this->assertEquals($builder->buildAPIGatewayUrl(), 'https://api-prestabulle6.billing.integration.prestashop.com');
 
         $builder = new UrlBuilder('preprod');
-        $this->assertEquals($builder->buildAPIGatewayUrl(), 'https://api.billing-preproduction.prestashop.com');
+        $this->assertEquals($builder->buildAPIGatewayUrl(), 'https://api.billing.preproduction.prestashop.com');
         $builder = new UrlBuilder();
         $this->assertEquals($builder->buildAPIGatewayUrl(), 'https://api.billing.prestashop.com');
     }

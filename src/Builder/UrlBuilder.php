@@ -110,7 +110,7 @@ class UrlBuilder
                 return 'https://api-' . $this->getEnvName() . '.billing.integration.prestashop.com';
                 break;
             case 'preprod':
-                return 'https://api.billing-preproduction.prestashop.com';
+                return 'https://api.billing.preproduction.prestashop.com';
                 break;
             default:
                 return 'https://api.billing.prestashop.com';
